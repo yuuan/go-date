@@ -1,0 +1,52 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    paths-ignore:
+      - '**/README.md'
+      - LICENSE
+      - .gitignore
+
+permissions:
+  # Required: allow read access to the content for analysis.
+  contents: read
+  # Optional: allow write access to checks to allow the action to annotate code in the PR.
+  checks: write
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.x'
+          cache: false
+      - name: Install dependencies
+        run: go get .
+      - name: Build
+        run: go build -v ./...
+      - name: Test
+        run: go test -v
+
+  golangci-lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.x'
+          cache: false
+      - name: Install golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.59.1
