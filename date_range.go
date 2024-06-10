@@ -215,7 +215,7 @@ func (r DateRange) Location() *time.Location {
 }
 
 func (r DateRange) Days() int {
-	return int(r.end.value.Sub(r.start.value).Hours() / 24) + 1
+	return int(r.end.value.Sub(r.start.value).Hours()/24) + 1
 }
 
 func (r DateRange) GetOverlapping(target DateRange) (DateRange, error) {
