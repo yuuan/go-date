@@ -17,10 +17,10 @@ func TestDateRangesSortMutable(t *testing.T) {
 
 		sorted := ranges.SortMutable()
 
-		assert.Equal(t, "2024-06-01:2024-06-01", sorted[0].String())
-		assert.Equal(t, "2024-06-02:2024-06-02", sorted[1].String())
-		assert.Equal(t, "2024-06-03:2024-06-03", sorted[2].String())
-		assert.Equal(t, "2024-06-03:2024-06-04", sorted[3].String())
+		assert.Equal(t, "2024-06-01/2024-06-01", sorted[0].String())
+		assert.Equal(t, "2024-06-02/2024-06-02", sorted[1].String())
+		assert.Equal(t, "2024-06-03/2024-06-03", sorted[2].String())
+		assert.Equal(t, "2024-06-03/2024-06-04", sorted[3].String())
 	})
 
 	t.Run("mutable", func(t *testing.T) {
@@ -67,10 +67,10 @@ func TestDateRangesSortReverseMutable(t *testing.T) {
 
 		sorted := ranges.SortReverseMutable()
 
-		assert.Equal(t, "2024-06-03:2024-06-04", sorted[0].String())
-		assert.Equal(t, "2024-06-03:2024-06-03", sorted[1].String())
-		assert.Equal(t, "2024-06-02:2024-06-02", sorted[2].String())
-		assert.Equal(t, "2024-06-01:2024-06-01", sorted[3].String())
+		assert.Equal(t, "2024-06-03/2024-06-04", sorted[0].String())
+		assert.Equal(t, "2024-06-03/2024-06-03", sorted[1].String())
+		assert.Equal(t, "2024-06-02/2024-06-02", sorted[2].String())
+		assert.Equal(t, "2024-06-01/2024-06-01", sorted[3].String())
 	})
 
 	t.Run("mutable", func(t *testing.T) {
@@ -116,10 +116,10 @@ func TestDateRangesSort(t *testing.T) {
 
 		sorted := ranges.Sort()
 
-		assert.Equal(t, "2024-06-01:2024-06-01", sorted[0].String())
-		assert.Equal(t, "2024-06-02:2024-06-02", sorted[1].String())
-		assert.Equal(t, "2024-06-03:2024-06-03", sorted[2].String())
-		assert.Equal(t, "2024-06-03:2024-06-04", sorted[3].String())
+		assert.Equal(t, "2024-06-01/2024-06-01", sorted[0].String())
+		assert.Equal(t, "2024-06-02/2024-06-02", sorted[1].String())
+		assert.Equal(t, "2024-06-03/2024-06-03", sorted[2].String())
+		assert.Equal(t, "2024-06-03/2024-06-04", sorted[3].String())
 	})
 
 	t.Run("immutable", func(t *testing.T) {
@@ -166,10 +166,10 @@ func TestDateRangesSortReverse(t *testing.T) {
 
 		sorted := ranges.SortReverse()
 
-		assert.Equal(t, "2024-06-03:2024-06-04", sorted[0].String())
-		assert.Equal(t, "2024-06-03:2024-06-03", sorted[1].String())
-		assert.Equal(t, "2024-06-02:2024-06-02", sorted[2].String())
-		assert.Equal(t, "2024-06-01:2024-06-01", sorted[3].String())
+		assert.Equal(t, "2024-06-03/2024-06-04", sorted[0].String())
+		assert.Equal(t, "2024-06-03/2024-06-03", sorted[1].String())
+		assert.Equal(t, "2024-06-02/2024-06-02", sorted[2].String())
+		assert.Equal(t, "2024-06-01/2024-06-01", sorted[3].String())
 	})
 
 	t.Run("immutable", func(t *testing.T) {

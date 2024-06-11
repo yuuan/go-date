@@ -240,5 +240,5 @@ func (r DateRange) Dates() Dates {
 }
 
 func (r DateRange) String() string {
-	return r.start.String() + ":" + r.end.String()
+	return r.start.String() + "/" + r.end.String()
 }
