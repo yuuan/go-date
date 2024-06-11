@@ -1,6 +1,13 @@
 package date
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
+
+var (
+	ErrDateRangesAreEmpty = fmt.Errorf("This DataRanges are empty")
+)
 
 type DateRanges []DateRange
 
@@ -46,6 +53,22 @@ func (drs DateRanges) EndDates() Dates {
 	}
 
 	return ends
+}
+
+func (drs DateRanges) FirstStart() (Date, error) {
+	if len(drs) == 0 {
+		return ZeroDate(), ErrDateRangesAreEmpty
+	}
+
+	return drs.StartDates().Sort().MustMin(), nil
+}
+
+func (drs DateRanges) LastEnd() (Date, error) {
+	if len(drs) == 0 {
+		return ZeroDate(), ErrDateRangesAreEmpty
+	}
+
+	return drs.EndDates().SortReverse().MustMax(), nil
 }
 
 func (drs DateRanges) Strings() []string {

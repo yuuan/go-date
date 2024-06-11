@@ -270,6 +270,82 @@ func TestDateRangesEndDates(t *testing.T) {
 	}
 }
 
+func TestDateRangesFirstStart(t *testing.T) {
+	tests := []struct {
+		ranges  DateRanges
+		want    Date
+		wantErr error
+	}{
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-05", "2024-06-05"),
+				MustParseDateRange("2024-06-05", "2024-06-06"),
+				MustParseDateRange("2024-06-06", "2024-06-07"),
+			},
+			MustParse("2024-06-05"),
+			nil,
+		},
+		{
+			DateRanges{},
+			ZeroDate(),
+			ErrDateRangesAreEmpty,
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`DateRanges{"%s"}.FirstStart()`, strings.Join(tt.ranges.Strings(), `","`))
+
+		t.Run(testcase, func(t *testing.T) {
+			date, err := tt.ranges.FirstStart()
+
+			assert.Equal(t, tt.want, date)
+			if tt.wantErr != nil {
+				assert.Error(t, err, tt.wantErr)
+			} else {
+				assert.Nil(t, err, "Expected no error, got %v", err)
+			}
+		})
+	}
+}
+
+func TestDateRangesLastEnd(t *testing.T) {
+	tests := []struct {
+		ranges  DateRanges
+		want    Date
+		wantErr error
+	}{
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-05", "2024-06-06"),
+				MustParseDateRange("2024-06-05", "2024-06-06"),
+				MustParseDateRange("2024-06-06", "2024-06-07"),
+			},
+			MustParse("2024-06-07"),
+			nil,
+		},
+		{
+			DateRanges{},
+			ZeroDate(),
+			ErrDateRangesAreEmpty,
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`DateRanges{"%s"}.LastEnd()`, strings.Join(tt.ranges.Strings(), `","`))
+
+		t.Run(testcase, func(t *testing.T) {
+			date, err := tt.ranges.LastEnd()
+
+			assert.Equal(t, tt.want, date)
+			if tt.wantErr != nil {
+				assert.Error(t, err, tt.wantErr)
+			} else {
+				assert.Nil(t, err, "Expected no error, got %v", err)
+			}
+		})
+	}
+}
+
 func TestDateRangesStrings(t *testing.T) {
 	tests := []struct {
 		ranges DateRanges
