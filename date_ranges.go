@@ -28,6 +28,26 @@ func (drs DateRanges) SortReverse() DateRanges {
 	return drs.clone().SortReverseMutable()
 }
 
+func (drs DateRanges) StartDates() Dates {
+	starts := make(Dates, len(drs))
+
+	for i, d := range drs {
+		starts[i] = d.start
+	}
+
+	return starts
+}
+
+func (drs DateRanges) EndDates() Dates {
+	ends := make(Dates, len(drs))
+
+	for i, d := range drs {
+		ends[i] = d.end
+	}
+
+	return ends
+}
+
 func (drs DateRanges) Strings() []string {
 	ranges := make([]string, len(drs))
 

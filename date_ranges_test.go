@@ -206,6 +206,70 @@ func TestDateRangesSortReverse(t *testing.T) {
 	})
 }
 
+func TestDateRangesStartDates(t *testing.T) {
+	tests := []struct {
+		ranges DateRanges
+		want   Dates
+	}{
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-05", "2024-06-05"),
+				MustParseDateRange("2024-06-05", "2024-06-06"),
+				MustParseDateRange("2024-06-06", "2024-06-07"),
+			},
+			Dates{
+				MustParse("2024-06-05"),
+				MustParse("2024-06-05"),
+				MustParse("2024-06-06"),
+			},
+		},
+		{
+			DateRanges{},
+			Dates{},
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`DateRanges{"%s"}.StartDates()`, strings.Join(tt.ranges.Strings(), `","`))
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.ranges.StartDates())
+		})
+	}
+}
+
+func TestDateRangesEndDates(t *testing.T) {
+	tests := []struct {
+		ranges DateRanges
+		want   Dates
+	}{
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-05", "2024-06-06"),
+				MustParseDateRange("2024-06-06", "2024-06-06"),
+				MustParseDateRange("2024-06-07", "2024-06-07"),
+			},
+			Dates{
+				MustParse("2024-06-06"),
+				MustParse("2024-06-06"),
+				MustParse("2024-06-07"),
+			},
+		},
+		{
+			DateRanges{},
+			Dates{},
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`DateRanges{"%s"}.EndDates()`, strings.Join(tt.ranges.Strings(), `","`))
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.ranges.EndDates())
+		})
+	}
+}
+
 func TestDateRangesStrings(t *testing.T) {
 	tests := []struct {
 		ranges DateRanges
