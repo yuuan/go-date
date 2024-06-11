@@ -203,25 +203,3 @@ func TestDateRangesSortReverse(t *testing.T) {
 		})
 	})
 }
-
-func TestDateRangesMin(t *testing.T) {
-	ranges := DateRanges{
-		MustParseDateRange("2024-06-02", "2024-06-02"),
-		MustParseDateRange("2024-06-01", "2024-06-01"),
-		MustParseDateRange("2024-06-03", "2024-06-04"),
-		MustParseDateRange("2024-06-03", "2024-06-03"),
-	}
-
-	assert.Equal(t, "2024-06-01:2024-06-01", ranges.Min().String())
-}
-
-func TestDateRangesMax(t *testing.T) {
-	ranges := DateRanges{
-		MustParseDateRange("2024-06-02", "2024-06-02"),
-		MustParseDateRange("2024-06-01", "2024-06-01"),
-		MustParseDateRange("2024-06-03", "2024-06-04"),
-		MustParseDateRange("2024-06-03", "2024-06-03"),
-	}
-
-	assert.Equal(t, "2024-06-03:2024-06-04", ranges.Max().String())
-}

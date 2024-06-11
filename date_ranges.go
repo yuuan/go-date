@@ -28,18 +28,6 @@ func (drs DateRanges) SortReverse() DateRanges {
 	return drs.clone().SortReverseMutable()
 }
 
-func (drs DateRanges) Min() DateRange {
-	dates := drs.Sort()
-
-	return dates[0]
-}
-
-func (drs DateRanges) Max() DateRange {
-	dates := drs.SortReverse()
-
-	return dates[0]
-}
-
 func (drs DateRanges) clone() DateRanges {
 	ranges := make(DateRanges, len(drs))
 	copy(ranges, drs[:])
