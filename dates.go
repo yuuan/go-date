@@ -1,6 +1,13 @@
 package date
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
+
+var (
+	ErrDatesAreEmpty = fmt.Errorf("This Dates are empty")
+)
 
 type Dates []Date
 
@@ -28,16 +35,24 @@ func (ds Dates) SortReverse() Dates {
 	return ds.clone().SortReverseMutable()
 }
 
-func (ds Dates) Min() Date {
+func (ds Dates) Min() (Date, error) {
+	if len(ds) == 0 {
+		return ZeroDate(), ErrDatesAreEmpty
+	}
+
 	dates := ds.Sort()
 
-	return dates[0]
+	return dates[0], nil
 }
 
-func (ds Dates) Max() Date {
+func (ds Dates) Max() (Date, error) {
+	if len(ds) == 0 {
+		return ZeroDate(), ErrDatesAreEmpty
+	}
+
 	dates := ds.SortReverse()
 
-	return dates[0]
+	return dates[0], nil
 }
 
 func (ds Dates) Equal(targets Dates) bool {

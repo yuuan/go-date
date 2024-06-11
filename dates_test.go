@@ -188,23 +188,51 @@ func TestDatesSortReverse(t *testing.T) {
 }
 
 func TestDatesMin(t *testing.T) {
-	dates := Dates{
-		MustParse("2024-06-02"),
-		MustParse("2024-06-01"),
-		MustParse("2024-06-03"),
-	}
+	t.Run("When Dates is not empty", func(t *testing.T) {
+		dates := Dates{
+			MustParse("2024-06-02"),
+			MustParse("2024-06-01"),
+			MustParse("2024-06-03"),
+		}
 
-	assert.Equal(t, "2024-06-01", dates.Min().String())
+		min, err := dates.Min()
+
+		assert.Equal(t, "2024-06-01", min.String())
+		assert.Nil(t, err, "Expected no error, got %v", err)
+	})
+
+	t.Run("When Dates is empty", func(t *testing.T) {
+		dates := Dates{}
+
+		min, err := dates.Min()
+
+		assert.ErrorIs(t, ErrDatesAreEmpty, err)
+		assert.Equal(t, ZeroDate(), min)
+	})
 }
 
 func TestDatesMax(t *testing.T) {
-	dates := Dates{
-		MustParse("2024-06-02"),
-		MustParse("2024-06-01"),
-		MustParse("2024-06-03"),
-	}
+	t.Run("When Dates is not empty", func(t *testing.T) {
+		dates := Dates{
+			MustParse("2024-06-02"),
+			MustParse("2024-06-01"),
+			MustParse("2024-06-03"),
+		}
 
-	assert.Equal(t, "2024-06-03", dates.Max().String())
+		max, err := dates.Max()
+
+		assert.Equal(t, "2024-06-03", max.String())
+		assert.Nil(t, err, "Expected no error, got %v", err)
+	})
+
+	t.Run("When Dates is empty", func(t *testing.T) {
+		dates := Dates{}
+
+		max, err := dates.Max()
+
+		assert.ErrorIs(t, ErrDatesAreEmpty, err)
+		assert.Equal(t, ZeroDate(), max)
+	})
 }
 
 func TestDatesEqual(t *testing.T) {
