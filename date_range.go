@@ -224,8 +224,8 @@ func (r DateRange) GetOverlapping(target DateRange) (DateRange, error) {
 	}
 
 	return DateRange{
-		Dates{r.start, target.start}.Max(),
-		Dates{r.end, target.end}.Min(),
+		Dates{r.start, target.start}.MustMax(),
+		Dates{r.end, target.end}.MustMin(),
 	}, nil
 }
 

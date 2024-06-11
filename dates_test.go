@@ -211,6 +211,24 @@ func TestDatesMin(t *testing.T) {
 	})
 }
 
+func TestDatesMustMin(t *testing.T) {
+	t.Run("When Dates is not empty", func(t *testing.T) {
+		dates := Dates{
+			MustParse("2024-06-02"),
+			MustParse("2024-06-01"),
+			MustParse("2024-06-03"),
+		}
+
+		assert.Equal(t, "2024-06-01", dates.MustMin().String())
+	})
+
+	t.Run("When Dates is empty", func(t *testing.T) {
+		dates := Dates{}
+
+		assert.Panics(t, func() { dates.MustMin() }, "Did not panic")
+	})
+}
+
 func TestDatesMax(t *testing.T) {
 	t.Run("When Dates is not empty", func(t *testing.T) {
 		dates := Dates{
@@ -232,6 +250,24 @@ func TestDatesMax(t *testing.T) {
 
 		assert.ErrorIs(t, ErrDatesAreEmpty, err)
 		assert.Equal(t, ZeroDate(), max)
+	})
+}
+
+func TestDatesMustMax(t *testing.T) {
+	t.Run("When Dates is not empty", func(t *testing.T) {
+		dates := Dates{
+			MustParse("2024-06-02"),
+			MustParse("2024-06-01"),
+			MustParse("2024-06-03"),
+		}
+
+		assert.Equal(t, "2024-06-03", dates.MustMax().String())
+	})
+
+	t.Run("When Dates is empty", func(t *testing.T) {
+		dates := Dates{}
+
+		assert.Panics(t, func() { dates.MustMax() }, "Did not panic")
 	})
 }
 

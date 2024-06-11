@@ -45,6 +45,15 @@ func (ds Dates) Min() (Date, error) {
 	return dates[0], nil
 }
 
+func (ds Dates) MustMin() Date {
+	min, err := ds.Min()
+	if err != nil {
+		panic(err)
+	}
+
+	return min
+}
+
 func (ds Dates) Max() (Date, error) {
 	if len(ds) == 0 {
 		return ZeroDate(), ErrDatesAreEmpty
@@ -53,6 +62,15 @@ func (ds Dates) Max() (Date, error) {
 	dates := ds.SortReverse()
 
 	return dates[0], nil
+}
+
+func (ds Dates) MustMax() Date {
+	max, err := ds.Max()
+	if err != nil {
+		panic(err)
+	}
+
+	return max
 }
 
 func (ds Dates) Equal(targets Dates) bool {
