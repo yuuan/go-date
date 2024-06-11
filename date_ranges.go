@@ -11,6 +11,34 @@ var (
 
 type DateRanges []DateRange
 
+func (drs DateRanges) AreUnique() bool {
+	length := len(drs)
+
+	for i := 0; i < length; i++ {
+		for j := i + 1; j < length; j++ {
+			if drs[i].Equal(drs[j]) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
+func (drs DateRanges) AreOverlapping() bool {
+	length := len(drs)
+
+	for i := 0; i < length; i++ {
+		for j := i + 1; j < length; j++ {
+			if drs[i].OverlapsWith(drs[j]) {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
 func (drs DateRanges) SortMutable() DateRanges {
 	sort.SliceStable(drs, func(i, j int) bool {
 		return drs[i].LessThan(drs[j])

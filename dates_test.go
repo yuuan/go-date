@@ -9,6 +9,58 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestDatesAreUnique(t *testing.T) {
+	tests := []struct {
+		dates Dates
+		want  bool
+	}{
+		{
+			Dates{
+				MustParse("2024-06-01"),
+			},
+			true,
+		},
+		{
+			Dates{
+				MustParse("2024-06-01"),
+				MustParse("2024-06-02"),
+				MustParse("2024-06-03"),
+			},
+			true,
+		},
+		{
+			Dates{
+				MustParse("2024-06-01"),
+				MustParse("2024-06-01"),
+			},
+			false,
+		},
+		{
+			Dates{
+				MustParse("2024-06-01"),
+				MustParse("2024-06-01"),
+				MustParse("2024-06-02"),
+			},
+			false,
+		},
+		{
+			Dates{
+				ZeroDate(),
+				ZeroDate(),
+			},
+			false,
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`Dates{"%s"}.AreUnique()`, strings.Join(tt.dates.Strings(), `","`))
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.dates.AreUnique())
+		})
+	}
+}
+
 func TestDatesSortMutable(t *testing.T) {
 	t.Run("sort", func(t *testing.T) {
 		dates := Dates{

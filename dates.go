@@ -11,6 +11,20 @@ var (
 
 type Dates []Date
 
+func (ds Dates) AreUnique() bool {
+	length := len(ds)
+
+	for i := 0; i < length; i++ {
+		for j := i + 1; j < length; j++ {
+			if ds[i].Equal(ds[j]) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
 func (ds Dates) SortMutable() Dates {
 	sort.SliceStable(ds, func(i, j int) bool {
 		return ds[i].Before(ds[j])

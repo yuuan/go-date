@@ -8,6 +8,123 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestDateRangesAreUnique(t *testing.T) {
+	tests := []struct {
+		ranges DateRanges
+		want   bool
+	}{
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+			},
+			true,
+		},
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+				MustParseDateRange("2024-06-01", "2024-06-03"),
+				MustParseDateRange("2024-06-02", "2024-06-03"),
+			},
+			true,
+		},
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+			},
+			false,
+		},
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+				MustParseDateRange("2024-06-02", "2024-06-03"),
+			},
+			false,
+		},
+		{
+			DateRanges{
+				ZeroDateRange(),
+				ZeroDateRange(),
+			},
+			false,
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`DateRanges{"%s"}.AreUnique()`, strings.Join(tt.ranges.Strings(), `","`))
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.ranges.AreUnique())
+		})
+	}
+}
+
+func TestDateRangesAreOverlapping(t *testing.T) {
+	tests := []struct {
+		ranges DateRanges
+		want   bool
+	}{
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+			},
+			false,
+		},
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+				MustParseDateRange("2024-06-02", "2024-06-03"),
+				MustParseDateRange("2024-06-04", "2024-06-05"),
+			},
+			false,
+		},
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+			},
+			true,
+		},
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-10"),
+				MustParseDateRange("2024-06-05", "2024-06-05"),
+			},
+			true,
+		},
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-05", "2024-06-05"),
+				MustParseDateRange("2024-06-01", "2024-06-10"),
+			},
+			true,
+		},
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-05"),
+				MustParseDateRange("2024-06-05", "2024-06-10"),
+			},
+			true,
+		},
+		{
+			DateRanges{
+				ZeroDateRange(),
+				ZeroDateRange(),
+			},
+			true,
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`DateRanges{"%s"}.AreOverlapping()`, strings.Join(tt.ranges.Strings(), `","`))
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.ranges.AreOverlapping())
+		})
+	}
+}
+
 func TestDateRangesSortMutable(t *testing.T) {
 	t.Run("sort", func(t *testing.T) {
 		ranges := DateRanges{
