@@ -1,6 +1,8 @@
 package date
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -202,4 +204,40 @@ func TestDateRangesSortReverse(t *testing.T) {
 			assert.Equal(t, ranges[3], sorted[3])
 		})
 	})
+}
+
+func TestDateRangesStrings(t *testing.T) {
+	tests := []struct {
+		ranges DateRanges
+		want   []string
+	}{
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+			},
+			[]string{
+				"2024-06-01/2024-06-01",
+			},
+		},
+		{
+			DateRanges{
+				MustParseDateRange("2024-06-01", "2024-06-01"),
+				MustParseDateRange("2024-06-01", "2024-06-02"),
+				MustParseDateRange("2024-06-02", "2024-06-03"),
+			},
+			[]string{
+				"2024-06-01/2024-06-01",
+				"2024-06-01/2024-06-02",
+				"2024-06-02/2024-06-03",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`DateRanges{%s}.Strings()`, `"`+strings.Join(tt.ranges.Strings(), `","`)+`"`)
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.ranges.Strings())
+		})
+	}
 }
