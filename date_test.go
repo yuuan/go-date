@@ -1583,6 +1583,24 @@ func TestString(t *testing.T) {
 	}
 }
 
+func TestStringPtr(t *testing.T) {
+	tests := []struct {
+		date Date
+		want string
+	}{
+		{MustParse("2024-06-05"), "2024-06-05"},
+		{ZeroDate(), "0001-01-01"},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`Date{"%s"}.StringPtr()`, tt.date)
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, *tt.date.StringPtr())
+		})
+	}
+}
+
 // Marshalling methods
 // --------------------------------------------------
 

@@ -311,6 +311,12 @@ func (d Date) String() string {
 	return d.Format("2006-01-02")
 }
 
+func (d Date) StringPtr() *string {
+	date := d.String()
+
+	return &date
+}
+
 // Marshalling methods
 // --------------------------------------------------
 
