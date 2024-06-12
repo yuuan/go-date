@@ -320,7 +320,7 @@ func (d Date) StringPtr() *string {
 // Marshalling methods
 // --------------------------------------------------
 
-func (d *Date) Value() (driver.Value, error) {
+func (d Date) Value() (driver.Value, error) {
 	return d.Time(), nil
 }
 
