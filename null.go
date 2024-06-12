@@ -67,6 +67,14 @@ func (nd *NullDate) NotEqual(target NullDate) bool {
 // Conversion methods
 // --------------------------------------------------
 
+func (nd *NullDate) Ptr() *Date {
+	if nd.IsNull() {
+		return nil
+	}
+
+	return &nd.date
+}
+
 func (nd *NullDate) Take() (Date, error) {
 	if nd.IsNull() {
 		return nd.date, fmt.Errorf("Take: %w", ErrNullDateIsNull)

@@ -201,6 +201,41 @@ func TestNullDateNotEqual(t *testing.T) {
 // Conversion methods
 // --------------------------------------------------
 
+func TestNullDatePtr(t *testing.T) {
+	tests := []struct {
+		nd   NullDate
+		want *Date
+	}{
+		{
+			NullDateFromDate(MustParse("2024-06-05")),
+			func() *Date {
+				d := MustParse("2024-06-05")
+				return &d
+			}(),
+		},
+		{
+			NullDateFromDate(ZeroDate()),
+			func() *Date {
+				d := ZeroDate()
+				return &d
+			}(),
+		},
+		{
+			NullDate{},
+			nil,
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`NullDate{date:"%s",isNotNull:%v}.Ptr()`, tt.nd.date, tt.nd.isNotNull)
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.nd.Ptr())
+		})
+	}
+
+}
+
 func TestTake(t *testing.T) {
 	tests := []struct {
 		nd      NullDate
