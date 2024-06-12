@@ -91,6 +91,14 @@ func (nd *NullDate) TakeOr(fallback Date) Date {
 	return nd.date
 }
 
+func (nd NullDate) StringPtr() *string {
+	if nd.IsNull() {
+		return nil
+	}
+
+	return nd.date.StringPtr()
+}
+
 // Marshalling methods
 // --------------------------------------------------
 

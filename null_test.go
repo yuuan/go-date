@@ -310,6 +310,37 @@ func TestTakeOr(t *testing.T) {
 	}
 }
 
+func TestNullDateStringPtr(t *testing.T) {
+	tests := []struct {
+		nd   NullDate
+		want *string
+	}{
+		{
+			NullDateFromDate(MustParse("2024-06-05")),
+			func() *string {
+				d := "2024-06-05"
+				return &d
+			}(),
+		},
+		{
+			NullDate{},
+			nil,
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(
+			`NullDate{date:"%s",isNotNull:%v}.StringPtr()`,
+			tt.nd.date,
+			tt.nd.isNotNull,
+		)
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.nd.StringPtr())
+		})
+	}
+}
+
 // Marshalling methods
 // --------------------------------------------------
 
