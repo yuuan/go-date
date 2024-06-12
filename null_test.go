@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -352,7 +353,7 @@ func TestNullDateValue(t *testing.T) {
 	}{
 		{
 			NullDateFromDate(MustParse("2024-06-05")),
-			"2024-06-05",
+			time.Date(2024, time.June, 5, 0, 0, 0, 0, time.Local),
 			false,
 		},
 		{

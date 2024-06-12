@@ -321,13 +321,21 @@ func (d Date) StringPtr() *string {
 // --------------------------------------------------
 
 func (d *Date) Value() (driver.Value, error) {
-	return d.String(), nil
+	return d.Time(), nil
 }
 
 func (d *Date) Scan(value interface{}) error {
 	switch value := value.(type) {
 	case nil:
 		return nil
+
+	case time.Time:
+		date := FromTime(value)
+		if date.IsZero() {
+			return fmt.Errorf("Scan: value is zero value of time.Time")
+		}
+
+		*d = date
 
 	case string:
 		if value == "" {

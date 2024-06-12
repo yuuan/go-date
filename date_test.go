@@ -1607,11 +1607,11 @@ func TestStringPtr(t *testing.T) {
 func TestValue(t *testing.T) {
 	tests := []struct {
 		date      Date
-		wantValue string
+		wantValue time.Time
 		wantErr   error
 	}{
-		{MustParse("2024-06-05"), "2024-06-05", nil},
-		{ZeroDate(), "0001-01-01", nil},
+		{MustParse("2024-06-05"), time.Date(2024, time.June, 5, 0, 0, 0, 0, time.Local), nil},
+		{ZeroDate(), time.Time{}, nil},
 	}
 
 	for _, tt := range tests {
