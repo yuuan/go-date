@@ -241,7 +241,7 @@ func TestTomorrow(t *testing.T) {
 // Determination methods
 // --------------------------------------------------
 
-func TestIsZero(t *testing.T) {
+func TestDateIsZero(t *testing.T) {
 	tests := []struct {
 		testcase string
 		date     func() Date
@@ -259,7 +259,7 @@ func TestIsZero(t *testing.T) {
 	}
 }
 
-func TestIsFirstOfMonth(t *testing.T) {
+func TestDateIsFirstOfMonth(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -279,7 +279,7 @@ func TestIsFirstOfMonth(t *testing.T) {
 	}
 }
 
-func TestIsLastOfMonth(t *testing.T) {
+func TestDateIsLastOfMonth(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -299,7 +299,7 @@ func TestIsLastOfMonth(t *testing.T) {
 	}
 }
 
-func TestIsMonday(t *testing.T) {
+func TestDateIsMonday(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -322,7 +322,7 @@ func TestIsMonday(t *testing.T) {
 	}
 }
 
-func TestIsTuesday(t *testing.T) {
+func TestDateIsTuesday(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -345,7 +345,7 @@ func TestIsTuesday(t *testing.T) {
 	}
 }
 
-func TestIsWednesday(t *testing.T) {
+func TestDateIsWednesday(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -368,7 +368,7 @@ func TestIsWednesday(t *testing.T) {
 	}
 }
 
-func TestIsThursday(t *testing.T) {
+func TestDateIsThursday(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -391,7 +391,7 @@ func TestIsThursday(t *testing.T) {
 	}
 }
 
-func TestIsFriday(t *testing.T) {
+func TestDateIsFriday(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -414,7 +414,7 @@ func TestIsFriday(t *testing.T) {
 	}
 }
 
-func TestIsSaturday(t *testing.T) {
+func TestDateIsSaturday(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -437,7 +437,7 @@ func TestIsSaturday(t *testing.T) {
 	}
 }
 
-func TestIsSunday(t *testing.T) {
+func TestDateIsSunday(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -460,7 +460,7 @@ func TestIsSunday(t *testing.T) {
 	}
 }
 
-func TestIsWeekday(t *testing.T) {
+func TestDateIsWeekday(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -483,7 +483,7 @@ func TestIsWeekday(t *testing.T) {
 	}
 }
 
-func TestIsWeekend(t *testing.T) {
+func TestDateIsWeekend(t *testing.T) {
 	tests := []struct {
 		date Date
 		want bool
@@ -506,7 +506,7 @@ func TestIsWeekend(t *testing.T) {
 	}
 }
 
-func TestIsPast(t *testing.T) {
+func TestDateIsPast(t *testing.T) {
 	tests := []struct {
 		now  time.Time
 		date func() Date
@@ -578,7 +578,7 @@ func TestIsPast(t *testing.T) {
 	}
 }
 
-func TestIsFuture(t *testing.T) {
+func TestDateIsFuture(t *testing.T) {
 	tests := []struct {
 		now  time.Time
 		date func() Date
@@ -650,7 +650,7 @@ func TestIsFuture(t *testing.T) {
 	}
 }
 
-func TestIsToday(t *testing.T) {
+func TestDateIsToday(t *testing.T) {
 	now := time.Date(2024, time.June, 5, 12, 0, 0, 0, time.Local)
 	SetTestNow(func() time.Time { return now })
 	defer ResetTestNow()
@@ -676,7 +676,7 @@ func TestIsToday(t *testing.T) {
 	}
 }
 
-func TestIsTomorrow(t *testing.T) {
+func TestDateIsTomorrow(t *testing.T) {
 	now := time.Date(2024, time.June, 5, 12, 0, 0, 0, time.Local)
 	SetTestNow(func() time.Time { return now })
 	defer ResetTestNow()
@@ -702,7 +702,7 @@ func TestIsTomorrow(t *testing.T) {
 	}
 }
 
-func TestIsYesterday(t *testing.T) {
+func TestDateIsYesterday(t *testing.T) {
 	now := time.Date(2024, time.June, 5, 12, 0, 0, 0, time.Local)
 	SetTestNow(func() time.Time { return now })
 	defer ResetTestNow()
@@ -731,7 +731,7 @@ func TestIsYesterday(t *testing.T) {
 // Comparison methods
 // --------------------------------------------------
 
-func TestCompare(t *testing.T) {
+func TestDateCompare(t *testing.T) {
 	tests := []struct {
 		dateA Date
 		dateB Date
@@ -751,7 +751,7 @@ func TestCompare(t *testing.T) {
 	}
 }
 
-func TestEqual(t *testing.T) {
+func TestDateEqual(t *testing.T) {
 	tests := []struct {
 		dateA Date
 		dateB Date
@@ -774,7 +774,7 @@ func TestEqual(t *testing.T) {
 	}
 }
 
-func TestNotEqual(t *testing.T) {
+func TestDateNotEqual(t *testing.T) {
 	tests := []struct {
 		dateA Date
 		dateB Date
@@ -797,7 +797,7 @@ func TestNotEqual(t *testing.T) {
 	}
 }
 
-func TestAfter(t *testing.T) {
+func TestDateAfter(t *testing.T) {
 	tests := []struct {
 		dateA Date
 		dateB Date
@@ -817,7 +817,7 @@ func TestAfter(t *testing.T) {
 	}
 }
 
-func TestAfterOrEqual(t *testing.T) {
+func TestDateAfterOrEqual(t *testing.T) {
 	tests := []struct {
 		dateA Date
 		dateB Date
@@ -837,7 +837,7 @@ func TestAfterOrEqual(t *testing.T) {
 	}
 }
 
-func TestBefore(t *testing.T) {
+func TestDateBefore(t *testing.T) {
 	tests := []struct {
 		dateA Date
 		dateB Date
@@ -857,7 +857,7 @@ func TestBefore(t *testing.T) {
 	}
 }
 
-func TestBeforeOrEqual(t *testing.T) {
+func TestDateBeforeOrEqual(t *testing.T) {
 	tests := []struct {
 		dateA Date
 		dateB Date
@@ -877,7 +877,7 @@ func TestBeforeOrEqual(t *testing.T) {
 	}
 }
 
-func TestBetween(t *testing.T) {
+func TestDateBetween(t *testing.T) {
 	tests := []struct {
 		date    Date
 		start   Date
@@ -966,7 +966,7 @@ func TestBetween(t *testing.T) {
 // Addition and Subtraction methods
 // --------------------------------------------------
 
-func TestAddDay(t *testing.T) {
+func TestDateAddDay(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -984,7 +984,7 @@ func TestAddDay(t *testing.T) {
 	}
 }
 
-func TestAddDays(t *testing.T) {
+func TestDateAddDays(t *testing.T) {
 	tests := []struct {
 		date Date
 		days int
@@ -1004,7 +1004,7 @@ func TestAddDays(t *testing.T) {
 	}
 }
 
-func TestSubDay(t *testing.T) {
+func TestDateSubDay(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1022,7 +1022,7 @@ func TestSubDay(t *testing.T) {
 	}
 }
 
-func TestSubDays(t *testing.T) {
+func TestDateSubDays(t *testing.T) {
 	tests := []struct {
 		date Date
 		days int
@@ -1042,7 +1042,7 @@ func TestSubDays(t *testing.T) {
 	}
 }
 
-func TestAddWeek(t *testing.T) {
+func TestDateAddWeek(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1059,7 +1059,7 @@ func TestAddWeek(t *testing.T) {
 	}
 }
 
-func TestAddWeeks(t *testing.T) {
+func TestDateAddWeeks(t *testing.T) {
 	tests := []struct {
 		date  Date
 		weeks int
@@ -1079,7 +1079,7 @@ func TestAddWeeks(t *testing.T) {
 	}
 }
 
-func TestSubWeek(t *testing.T) {
+func TestDateSubWeek(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1096,7 +1096,7 @@ func TestSubWeek(t *testing.T) {
 	}
 }
 
-func TestSubWeeks(t *testing.T) {
+func TestDateSubWeeks(t *testing.T) {
 	tests := []struct {
 		date  Date
 		weeks int
@@ -1116,7 +1116,7 @@ func TestSubWeeks(t *testing.T) {
 	}
 }
 
-func TestAddMonth(t *testing.T) {
+func TestDateAddMonth(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1134,7 +1134,7 @@ func TestAddMonth(t *testing.T) {
 	}
 }
 
-func TestAddMonths(t *testing.T) {
+func TestDateAddMonths(t *testing.T) {
 	tests := []struct {
 		date   Date
 		months int
@@ -1158,7 +1158,7 @@ func TestAddMonths(t *testing.T) {
 	}
 }
 
-func TestSubMonth(t *testing.T) {
+func TestDateSubMonth(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1176,7 +1176,7 @@ func TestSubMonth(t *testing.T) {
 	}
 }
 
-func TestSubMonths(t *testing.T) {
+func TestDateSubMonths(t *testing.T) {
 	tests := []struct {
 		date   Date
 		months int
@@ -1198,7 +1198,7 @@ func TestSubMonths(t *testing.T) {
 	}
 }
 
-func TestAddYear(t *testing.T) {
+func TestDateAddYear(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1217,7 +1217,7 @@ func TestAddYear(t *testing.T) {
 	}
 }
 
-func TestAddYears(t *testing.T) {
+func TestDateAddYears(t *testing.T) {
 	tests := []struct {
 		date  Date
 		years int
@@ -1239,7 +1239,7 @@ func TestAddYears(t *testing.T) {
 	}
 }
 
-func TestSubYear(t *testing.T) {
+func TestDateSubYear(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1258,7 +1258,7 @@ func TestSubYear(t *testing.T) {
 	}
 }
 
-func TestSubYears(t *testing.T) {
+func TestDateSubYears(t *testing.T) {
 	tests := []struct {
 		date  Date
 		years int
@@ -1280,7 +1280,7 @@ func TestSubYears(t *testing.T) {
 	}
 }
 
-func TestStartOfMonth(t *testing.T) {
+func TestDateStartOfMonth(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1300,7 +1300,7 @@ func TestStartOfMonth(t *testing.T) {
 	}
 }
 
-func TestEndOfMonth(t *testing.T) {
+func TestDateEndOfMonth(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1320,7 +1320,7 @@ func TestEndOfMonth(t *testing.T) {
 	}
 }
 
-func TestStartOfYear(t *testing.T) {
+func TestDateStartOfYear(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1339,7 +1339,7 @@ func TestStartOfYear(t *testing.T) {
 	}
 }
 
-func TestEndOfYear(t *testing.T) {
+func TestDateEndOfYear(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1361,7 +1361,7 @@ func TestEndOfYear(t *testing.T) {
 // Conversion methods
 // --------------------------------------------------
 
-func TestToMonth(t *testing.T) {
+func TestDateToMonth(t *testing.T) {
 	tests := []struct {
 		date Date
 		want Month
@@ -1378,7 +1378,7 @@ func TestToMonth(t *testing.T) {
 	}
 }
 
-func TestTime(t *testing.T) {
+func TestDateTime(t *testing.T) {
 	tests := []struct {
 		date Date
 		want time.Time
@@ -1406,7 +1406,7 @@ func TestTime(t *testing.T) {
 	}
 }
 
-func TestYear(t *testing.T) {
+func TestDateYear(t *testing.T) {
 	tests := []struct {
 		date Date
 		want int
@@ -1423,7 +1423,7 @@ func TestYear(t *testing.T) {
 	}
 }
 
-func TestMonth(t *testing.T) {
+func TestDateMonth(t *testing.T) {
 	tests := []struct {
 		date Date
 		want time.Month
@@ -1440,7 +1440,7 @@ func TestMonth(t *testing.T) {
 	}
 }
 
-func TestDay(t *testing.T) {
+func TestDateDay(t *testing.T) {
 	tests := []struct {
 		date Date
 		want int
@@ -1457,7 +1457,7 @@ func TestDay(t *testing.T) {
 	}
 }
 
-func TestYearDay(t *testing.T) {
+func TestDateYearDay(t *testing.T) {
 	tests := []struct {
 		date Date
 		want int
@@ -1476,7 +1476,7 @@ func TestYearDay(t *testing.T) {
 	}
 }
 
-func TestISOWeek(t *testing.T) {
+func TestDateISOWeek(t *testing.T) {
 	tests := []struct {
 		date     Date
 		wantYear int
@@ -1498,7 +1498,7 @@ func TestISOWeek(t *testing.T) {
 	}
 }
 
-func TestWeekday(t *testing.T) {
+func TestDateWeekday(t *testing.T) {
 	tests := []struct {
 		date Date
 		want time.Weekday
@@ -1521,7 +1521,7 @@ func TestWeekday(t *testing.T) {
 	}
 }
 
-func TestLocation(t *testing.T) {
+func TestDateLocation(t *testing.T) {
 	tests := []struct {
 		location *time.Location
 	}{
@@ -1541,7 +1541,7 @@ func TestLocation(t *testing.T) {
 	}
 }
 
-func TestFormat(t *testing.T) {
+func TestDateFormat(t *testing.T) {
 	tests := []struct {
 		date   Date
 		format string
@@ -1561,7 +1561,7 @@ func TestFormat(t *testing.T) {
 	}
 }
 
-func TestSplit(t *testing.T) {
+func TestDateSplit(t *testing.T) {
 	tests := []struct {
 		date      Date
 		wantYear  int
@@ -1584,7 +1584,7 @@ func TestSplit(t *testing.T) {
 	}
 }
 
-func TestString(t *testing.T) {
+func TestDateString(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1602,7 +1602,7 @@ func TestString(t *testing.T) {
 	}
 }
 
-func TestStringPtr(t *testing.T) {
+func TestDateStringPtr(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1623,7 +1623,7 @@ func TestStringPtr(t *testing.T) {
 // Marshalling methods
 // --------------------------------------------------
 
-func TestValue(t *testing.T) {
+func TestDateValue(t *testing.T) {
 	tests := []struct {
 		date      Date
 		wantValue time.Time
@@ -1644,7 +1644,7 @@ func TestValue(t *testing.T) {
 	}
 }
 
-func TestScan(t *testing.T) {
+func TestDateScan(t *testing.T) {
 	tests := []struct {
 		value string
 		want  string
@@ -1671,7 +1671,7 @@ func TestScan(t *testing.T) {
 	}
 }
 
-func TestMarshalText(t *testing.T) {
+func TestDateMarshalText(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1691,7 +1691,7 @@ func TestMarshalText(t *testing.T) {
 	}
 }
 
-func TestUnmarshalText(t *testing.T) {
+func TestDateUnmarshalText(t *testing.T) {
 	tests := []struct {
 		text []byte
 		want string
@@ -1718,7 +1718,7 @@ func TestUnmarshalText(t *testing.T) {
 	}
 }
 
-func TestMarshalJSON(t *testing.T) {
+func TestDateMarshalJSON(t *testing.T) {
 	tests := []struct {
 		date Date
 		want string
@@ -1738,7 +1738,7 @@ func TestMarshalJSON(t *testing.T) {
 	}
 }
 
-func TestUnmarshalJSON(t *testing.T) {
+func TestDateUnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		json []byte
 		want string
