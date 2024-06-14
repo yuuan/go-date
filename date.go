@@ -267,6 +267,10 @@ func (d Date) EndOfYear() Date {
 // Conversion methods
 // --------------------------------------------------
 
+func (d Date) ToMonth() Month {
+	return NewMonth(d.Year(), d.Month())
+}
+
 func (d Date) Time() time.Time {
 	return d.value
 }

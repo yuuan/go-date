@@ -1359,6 +1359,23 @@ func TestEndOfYear(t *testing.T) {
 // Conversion methods
 // --------------------------------------------------
 
+func TestToMonth(t *testing.T) {
+	tests := []struct {
+		date Date
+		want Month
+	}{
+		{MustParse("2024-06-05"), MustParseMonth("2024-06")},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`Date{"%s"}.ToMonth()`, tt.date)
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.date.ToMonth())
+		})
+	}
+}
+
 func TestTime(t *testing.T) {
 	tests := []struct {
 		date Date
