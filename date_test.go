@@ -1122,7 +1122,7 @@ func TestAddMonth(t *testing.T) {
 		want string
 	}{
 		{MustParse("2024-06-01"), "2024-07-01"},
-		{MustParse("2024-05-31"), "2024-07-01"},
+		{MustParse("2024-05-31"), "2024-06-30"},
 	}
 
 	for _, tt := range tests {
@@ -1142,9 +1142,11 @@ func TestAddMonths(t *testing.T) {
 	}{
 		{MustParse("2024-06-01"), 0, "2024-06-01"},
 		{MustParse("2024-06-01"), 1, "2024-07-01"},
-		{MustParse("2024-05-31"), 1, "2024-07-01"},
+		{MustParse("2024-05-31"), 1, "2024-06-30"},
 		{MustParse("2024-06-01"), -1, "2024-05-01"},
-		{MustParse("2024-05-31"), -1, "2024-05-01"},
+		{MustParse("2024-05-31"), -1, "2024-04-30"},
+		{MustParse("2024-01-31"), 1, "2024-02-29"},
+		{MustParse("2024-03-31"), -1, "2024-02-29"},
 	}
 
 	for _, tt := range tests {
@@ -1162,7 +1164,7 @@ func TestSubMonth(t *testing.T) {
 		want string
 	}{
 		{MustParse("2024-06-01"), "2024-05-01"},
-		{MustParse("2024-05-31"), "2024-05-01"},
+		{MustParse("2024-05-31"), "2024-04-30"},
 	}
 
 	for _, tt := range tests {
@@ -1182,9 +1184,9 @@ func TestSubMonths(t *testing.T) {
 	}{
 		{MustParse("2024-06-01"), 0, "2024-06-01"},
 		{MustParse("2024-06-01"), 1, "2024-05-01"},
-		{MustParse("2024-05-31"), 1, "2024-05-01"},
+		{MustParse("2024-05-31"), 1, "2024-04-30"},
 		{MustParse("2024-06-01"), -1, "2024-07-01"},
-		{MustParse("2024-05-31"), -1, "2024-07-01"},
+		{MustParse("2024-05-31"), -1, "2024-06-30"},
 	}
 
 	for _, tt := range tests {

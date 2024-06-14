@@ -221,7 +221,14 @@ func (d Date) AddMonth() Date {
 }
 
 func (d Date) AddMonths(months int) Date {
-	return d.AddDate(0, months, 0)
+	m := d.ToMonth().AddMonths(months)
+	date := NewDate(m.Year(), m.Month(), d.Day())
+
+	if date.ToMonth().Equal(m) {
+		return date
+	}
+
+	return date.SubDays(date.Day())
 }
 
 func (d Date) SubMonth() Date {
