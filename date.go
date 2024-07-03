@@ -121,8 +121,16 @@ func (d Date) IsPast() bool {
 	return d.Before(Today())
 }
 
+func (d Date) IsPastOrToday() bool {
+	return d.BeforeOrEqual(Today())
+}
+
 func (d Date) IsFuture() bool {
 	return d.After(Today())
+}
+
+func (d Date) IsFutureOrToday() bool {
+	return d.AfterOrEqual(Today())
 }
 
 func (d Date) IsToday() bool {

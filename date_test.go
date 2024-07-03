@@ -578,6 +578,43 @@ func TestDateIsPast(t *testing.T) {
 	}
 }
 
+func TestDateIsPastOrToday(t *testing.T) {
+	tests := []struct {
+		now  time.Time
+		date func() Date
+		want bool
+	}{
+		{
+			time.Date(2024, time.June, 4, 0, 0, 0, 0, time.Local),
+			func() Date { return MustParse("2024-06-05") },
+			false,
+		},
+		{
+			time.Date(2024, time.June, 5, 0, 0, 0, 0, time.Local),
+			func() Date { return MustParse("2024-06-05") },
+			true,
+		},
+		{
+			time.Date(2024, time.June, 6, 0, 0, 0, 0, time.Local),
+			func() Date { return MustParse("2024-06-05") },
+			true,
+		},
+	}
+
+	for _, tt := range tests {
+		SetTestNow(func() time.Time { return tt.now })
+		defer ResetTestNow()
+
+		date := tt.date()
+
+		testcase := fmt.Sprintf(`Date{"%s"}.IsPastOrToday() at %s`, date, now().Format(iso8601))
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, date.IsPastOrToday())
+		})
+	}
+}
+
 func TestDateIsFuture(t *testing.T) {
 	tests := []struct {
 		now  time.Time
@@ -646,6 +683,43 @@ func TestDateIsFuture(t *testing.T) {
 
 		t.Run(testcase, func(t *testing.T) {
 			assert.Equal(t, tt.want, date.IsFuture())
+		})
+	}
+}
+
+func TestDateIsFutureOrToday(t *testing.T) {
+	tests := []struct {
+		now  time.Time
+		date func() Date
+		want bool
+	}{
+		{
+			time.Date(2024, time.June, 4, 0, 0, 0, 0, time.Local),
+			func() Date { return MustParse("2024-06-05") },
+			true,
+		},
+		{
+			time.Date(2024, time.June, 5, 0, 0, 0, 0, time.Local),
+			func() Date { return MustParse("2024-06-05") },
+			true,
+		},
+		{
+			time.Date(2024, time.June, 6, 0, 0, 0, 0, time.Local),
+			func() Date { return MustParse("2024-06-05") },
+			false,
+		},
+	}
+
+	for _, tt := range tests {
+		SetTestNow(func() time.Time { return tt.now })
+		defer ResetTestNow()
+
+		date := tt.date()
+
+		testcase := fmt.Sprintf(`Date{"%s"}.IsFutureOrToday() at %s`, date, now().Format(iso8601))
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, date.IsFutureOrToday())
 		})
 	}
 }
