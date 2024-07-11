@@ -1,6 +1,7 @@
 package date
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"testing"
 	"time"
@@ -1700,11 +1701,11 @@ func TestDateStringPtr(t *testing.T) {
 func TestDateValue(t *testing.T) {
 	tests := []struct {
 		date      Date
-		wantValue time.Time
+		wantValue driver.Value
 		wantErr   error
 	}{
-		{MustParse("2024-06-05"), time.Date(2024, time.June, 5, 0, 0, 0, 0, time.Local), nil},
-		{ZeroDate(), time.Time{}, nil},
+		{MustParse("2024-06-05"), "2024-06-05", nil},
+		{ZeroDate(), "0001-01-01", nil},
 	}
 
 	for _, tt := range tests {

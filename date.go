@@ -340,7 +340,7 @@ func (d Date) StringPtr() *string {
 // --------------------------------------------------
 
 func (d Date) Value() (driver.Value, error) {
-	return d.Time(), nil
+	return d.String(), nil
 }
 
 func (d *Date) Scan(value interface{}) error {
