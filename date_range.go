@@ -230,7 +230,7 @@ func (r DateRange) GetOverlapping(target DateRange) (DateRange, error) {
 }
 
 func (r DateRange) Dates() Dates {
-	ds := make(Dates, r.Days())
+	ds := make(Dates, 0, r.Days())
 
 	for d := r.start; d.BeforeOrEqual(r.end); d = d.AddDay() {
 		ds = append(ds, d)

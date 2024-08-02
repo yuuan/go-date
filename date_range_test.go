@@ -2029,6 +2029,36 @@ func TestDateRangeGetOverlapping(t *testing.T) {
 	}
 }
 
+func TestDateRangeDates(t *testing.T) {
+	tests := []struct {
+		dr   DateRange
+		want Dates
+	}{
+		{
+			MustParseDateRange("2024-06-05", "2024-06-05"),
+			Dates{MustParse("2024-06-05")},
+		},
+		{
+			MustParseDateRange("2024-06-05", "2024-06-07"),
+			Dates{MustParse("2024-06-05"), MustParse("2024-06-06"), MustParse("2024-06-07")},
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(
+			`DateRange{"%s","%s"}.Dates()`,
+			tt.dr.start,
+			tt.dr.end,
+		)
+
+		t.Run(testcase, func(t *testing.T) {
+			for i, d := range tt.dr.Dates() {
+				assert.Equal(t, d, tt.want[i])
+			}
+		})
+	}
+}
+
 func TestDateRangeString(t *testing.T) {
 	tests := []struct {
 		dr   DateRange
