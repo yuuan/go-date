@@ -100,6 +100,14 @@ func (nd NullDate) MustTake() Date {
 	return d
 }
 
+func (nd NullDate) String() string {
+	if nd.IsNull() {
+		return "null"
+	}
+
+	return nd.date.String()
+}
+
 func (nd NullDate) StringPtr() *string {
 	if nd.IsNull() {
 		return nil

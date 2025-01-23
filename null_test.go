@@ -310,6 +310,34 @@ func TestTakeOr(t *testing.T) {
 	}
 }
 
+func TestNullDateString(t *testing.T) {
+	tests := []struct {
+		nd   NullDate
+		want string
+	}{
+		{
+			NullDateFromDate(MustParse("2024-06-05")),
+			"2024-06-05",
+		},
+		{
+			NullDate{},
+			"null",
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(
+			`NullDate{date:"%s",isNotNull:%v}.String()`,
+			tt.nd.date,
+			tt.nd.isNotNull,
+		)
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.nd.String())
+		})
+	}
+}
+
 func TestNullDateStringPtr(t *testing.T) {
 	tests := []struct {
 		nd   NullDate
