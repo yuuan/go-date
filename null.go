@@ -91,6 +91,15 @@ func (nd NullDate) TakeOr(fallback Date) Date {
 	return nd.date
 }
 
+func (nd NullDate) MustTake() Date {
+	d, err := nd.Take()
+	if err != nil {
+		panic(err)
+	}
+
+	return d
+}
+
 func (nd NullDate) StringPtr() *string {
 	if nd.IsNull() {
 		return nil
