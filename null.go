@@ -41,18 +41,18 @@ func NullDateForNull() NullDate {
 // Determination methods
 // --------------------------------------------------
 
-func (nd *NullDate) IsNull() bool {
+func (nd NullDate) IsNull() bool {
 	return !nd.isNotNull
 }
 
-func (nd *NullDate) IsNotNull() bool {
+func (nd NullDate) IsNotNull() bool {
 	return nd.isNotNull
 }
 
 // Comparison methods
 // --------------------------------------------------
 
-func (nd *NullDate) Equal(target NullDate) bool {
+func (nd NullDate) Equal(target NullDate) bool {
 	if nd.IsNull() {
 		return nd.isNotNull == target.isNotNull
 	}
@@ -60,14 +60,14 @@ func (nd *NullDate) Equal(target NullDate) bool {
 	return nd.date.Equal(target.date)
 }
 
-func (nd *NullDate) NotEqual(target NullDate) bool {
+func (nd NullDate) NotEqual(target NullDate) bool {
 	return !nd.Equal(target)
 }
 
 // Conversion methods
 // --------------------------------------------------
 
-func (nd *NullDate) Ptr() *Date {
+func (nd NullDate) Ptr() *Date {
 	if nd.IsNull() {
 		return nil
 	}
@@ -75,7 +75,7 @@ func (nd *NullDate) Ptr() *Date {
 	return &nd.date
 }
 
-func (nd *NullDate) Take() (Date, error) {
+func (nd NullDate) Take() (Date, error) {
 	if nd.IsNull() {
 		return nd.date, fmt.Errorf("Take: %w", ErrNullDateIsNull)
 	}
@@ -83,7 +83,7 @@ func (nd *NullDate) Take() (Date, error) {
 	return nd.date, nil
 }
 
-func (nd *NullDate) TakeOr(fallback Date) Date {
+func (nd NullDate) TakeOr(fallback Date) Date {
 	if nd.IsNull() {
 		return fallback
 	}
@@ -91,7 +91,7 @@ func (nd *NullDate) TakeOr(fallback Date) Date {
 	return nd.date
 }
 
-func (nd *NullDate) StringPtr() *string {
+func (nd NullDate) StringPtr() *string {
 	if nd.IsNull() {
 		return nil
 	}
