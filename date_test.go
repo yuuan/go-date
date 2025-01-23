@@ -1453,6 +1453,26 @@ func TestDateToMonth(t *testing.T) {
 	}
 }
 
+func TestDateNullable(t *testing.T) {
+	tests := []struct {
+		date Date
+	}{
+		{MustParse("2024-06-05")},
+		{ZeroDate()},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`Date{"%s"}.Nullable()`, tt.date)
+
+		t.Run(testcase, func(t *testing.T) {
+			taken, err := tt.date.Nullable().Take()
+			if assert.NoError(t, err, "Failed to take a Date from NullDate") {
+				assert.Equal(t, tt.date, taken)
+			}
+		})
+	}
+}
+
 func TestDateTime(t *testing.T) {
 	tests := []struct {
 		date Date

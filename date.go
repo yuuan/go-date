@@ -286,6 +286,10 @@ func (d Date) ToMonth() Month {
 	return NewMonth(d.Year(), d.Month())
 }
 
+func (d Date) Nullable() NullDate {
+	return NullDateFromDate(d)
+}
+
 func (d Date) Time() time.Time {
 	return d.value
 }
