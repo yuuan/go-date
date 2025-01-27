@@ -15,44 +15,135 @@ func TestNewDateRange(t *testing.T) {
 	tests := []struct {
 		start   Date
 		end     Date
+		strict  bool
 		want    DateRange
 		wantErr error
 	}{
 		{
 			MustParse("2024-06-01"),
 			MustParse("2024-06-02"),
+			true,
+			MustNewDateRange(MustParse("2024-06-01"), MustParse("2024-06-02")),
+			nil,
+		},
+		{
+			MustParse("2024-06-01"),
+			MustParse("2024-06-02"),
+			false,
 			MustNewDateRange(MustParse("2024-06-01"), MustParse("2024-06-02")),
 			nil,
 		},
 		{
 			ZeroDate(),
 			ZeroDate(),
+			true,
+			ZeroDateRange(),
+			nil,
+		},
+		{
+			ZeroDate(),
+			ZeroDate(),
+			false,
 			ZeroDateRange(),
 			nil,
 		},
 		{
 			FromTime(time.Date(2024, time.June, 1, 0, 0, 0, 0, time.UTC)),
 			FromTime(time.Date(2024, time.June, 10, 0, 0, 0, 0, time.Local)),
+			true,
+			ZeroDateRange(),
+			ErrDifferentTimeZone,
+		},
+		{
+			FromTime(time.Date(2024, time.June, 1, 0, 0, 0, 0, time.UTC)),
+			FromTime(time.Date(2024, time.June, 10, 0, 0, 0, 0, time.Local)),
+			false,
 			ZeroDateRange(),
 			ErrDifferentTimeZone,
 		},
 		{
 			ZeroDate(),
 			FromTime(time.Date(2024, time.June, 10, 0, 0, 0, 0, time.UTC)),
+			true,
+			ZeroDateRange(),
+			ErrOnlyOneSideIsZero,
+		},
+		{
+			ZeroDate(),
+			FromTime(time.Date(2024, time.June, 10, 0, 0, 0, 0, time.UTC)),
+			false,
 			ZeroDateRange(),
 			ErrOnlyOneSideIsZero,
 		},
 		{
 			FromTime(time.Date(2024, time.June, 10, 0, 0, 0, 0, time.UTC)),
 			ZeroDate(),
+			true,
+			ZeroDateRange(),
+			ErrOnlyOneSideIsZero,
+		},
+		{
+			FromTime(time.Date(2024, time.June, 10, 0, 0, 0, 0, time.UTC)),
+			ZeroDate(),
+			false,
 			ZeroDateRange(),
 			ErrOnlyOneSideIsZero,
 		},
 		{
 			MustParse("2024-06-02"),
 			MustParse("2024-06-01"),
+			true,
 			ZeroDateRange(),
 			ErrEndDateIsBeforeStartDate,
+		},
+		{
+			MustParse("2024-06-02"),
+			MustParse("2024-06-01"),
+			false,
+			ZeroDateRange(),
+			ErrEndDateIsBeforeStartDate,
+		},
+		{
+			FromTime(time.Date(2024, time.June, 1, 0, 0, 0, 0, func() *time.Location {
+				loc, err := time.LoadLocation("Asia/Tokyo")
+				if err != nil {
+					panic(err)
+				}
+
+				return loc
+			}())),
+			FromTime(time.Date(2024, time.June, 10, 0, 0, 0, 0, func() *time.Location {
+				loc, err := time.LoadLocation("Asia/Tokyo")
+				if err != nil {
+					panic(err)
+				}
+
+				return loc
+			}())),
+			true,
+			ZeroDateRange(),
+			ErrDifferentTimeZone,
+		},
+		{
+			FromTime(time.Date(2024, time.June, 1, 0, 0, 0, 0, func() *time.Location {
+				loc, err := time.LoadLocation("Asia/Tokyo")
+				if err != nil {
+					panic(err)
+				}
+
+				return loc
+			}())),
+			FromTime(time.Date(2024, time.June, 10, 0, 0, 0, 0, func() *time.Location {
+				loc, err := time.LoadLocation("Asia/Tokyo")
+				if err != nil {
+					panic(err)
+				}
+
+				return loc
+			}())),
+			false,
+			ZeroDateRange(),
+			ErrDifferentTimeZone,
 		},
 	}
 
@@ -66,6 +157,8 @@ func TestNewDateRange(t *testing.T) {
 		)
 
 		t.Run(testcase, func(t *testing.T) {
+			StrictLocationComparison = tt.strict
+
 			r, err := NewDateRange(tt.start, tt.end)
 
 			assert.Equal(t, tt.want.String(), r.String())
