@@ -4,6 +4,19 @@ import (
 	"time"
 )
 
+// StrictLocationComparison determines how time.Location values are compared.
+//
+// If true, Location comparison is strict and checks whether the pointer
+// addresses of the Locations are identical. This ensures that only the exact
+// same Location instances are considered equal.
+//
+// If false, Location comparison is relaxed and checks whether the names of
+// the Locations are equal. This allows Locations with the same name but
+// different underlying instances to be considered equal.
+//
+// Default: false
+var StrictLocationComparison = false
+
 const iso8601 = "2006-01-02T15:04:05.999999999+09:00"
 
 var (
