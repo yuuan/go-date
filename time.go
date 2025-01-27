@@ -47,3 +47,11 @@ func today() time.Time {
 func startOfDay(origin time.Time) time.Time {
 	return time.Date(origin.Year(), origin.Month(), origin.Day(), 0, 0, 0, 0, origin.Location())
 }
+
+func locationsEqual(first *time.Location, second *time.Location) bool {
+	if StrictLocationComparison {
+		return first == second
+	}
+
+	return first.String() == second.String()
+}
