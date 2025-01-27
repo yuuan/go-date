@@ -21,7 +21,7 @@ type DateRange struct {
 // --------------------------------------------------
 
 func NewDateRange(start, end Date) (DateRange, error) {
-	if start.Location() != end.Location() {
+	if locationsEqual(start.Location(), end.Location()) {
 		return ZeroDateRange(), ErrDifferentTimeZone
 	}
 
