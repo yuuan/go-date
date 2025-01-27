@@ -116,6 +116,45 @@ func (nd NullDate) StringPtr() *string {
 	return nd.date.StringPtr()
 }
 
+// Conditional methods
+// --------------------------------------------------
+
+func (nd NullDate) IfSome(f func(Date)) {
+	if nd.IsNotNull() {
+		f(nd.date)
+	}
+}
+
+func (nd NullDate) IfSomeWithError(f func(Date) error) error {
+	if nd.IsNotNull() {
+		return f(nd.date)
+	}
+
+	return nil
+}
+
+func (nd NullDate) IfNone(f func()) {
+	if nd.IsNull() {
+		f()
+	}
+}
+
+func (nd NullDate) IfNoneWithError(f func() error) error {
+	if nd.IsNull() {
+		return f()
+	}
+
+	return nil
+}
+
+func (nd NullDate) Map(f func(Date) Date) NullDate {
+	if nd.IsNotNull() {
+		return NullDateFromDate(f(nd.date))
+	}
+
+	return nd
+}
+
 // Marshalling methods
 // --------------------------------------------------
 

@@ -369,6 +369,139 @@ func TestNullDateStringPtr(t *testing.T) {
 	}
 }
 
+// Conditional methods
+// --------------------------------------------------
+
+func TestNullDateIfSome(t *testing.T) {
+	tests := []struct {
+		nd     NullDate
+		called bool
+	}{
+		{NullDateFromDate(MustParse("2024-06-05")), true},
+		{NullDate{}, false},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`NullDate{date:"%s",isNotNull:%v}.IfSome()`, tt.nd.date, tt.nd.isNotNull)
+
+		t.Run(testcase, func(t *testing.T) {
+			isCalled := false
+			tt.nd.IfSome(func(d Date) {
+				assert.Equal(t, d, tt.nd.date)
+
+				isCalled = true
+			})
+			assert.Equal(t, tt.called, isCalled)
+		})
+	}
+}
+
+func TestNullDateIfSomeWithError(t *testing.T) {
+	tests := []struct {
+		nd     NullDate
+		called bool
+		err    error
+	}{
+		{NullDateFromDate(MustParse("2024-06-05")), true, nil},
+		{NullDateFromDate(MustParse("2024-06-05")), true, fmt.Errorf("Returned error")},
+		{NullDate{}, false, nil},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`NullDate{date:"%s",isNotNull:%v}.IfSomeWithError()`, tt.nd.date, tt.nd.isNotNull)
+
+		t.Run(testcase, func(t *testing.T) {
+			isCalled := false
+			err := tt.nd.IfSomeWithError(func(d Date) error {
+				assert.Equal(t, d, tt.nd.date)
+
+				isCalled = true
+
+				return tt.err
+			})
+			assert.Equal(t, tt.called, isCalled)
+			assert.Equal(t, tt.err, err)
+		})
+	}
+}
+
+func TestNullDateIfNone(t *testing.T) {
+	tests := []struct {
+		nd     NullDate
+		called bool
+	}{
+		{NullDateFromDate(MustParse("2024-06-05")), false},
+		{NullDate{}, true},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`NullDate{date:"%s",isNotNull:%v}.IfNone()`, tt.nd.date, tt.nd.isNotNull)
+
+		t.Run(testcase, func(t *testing.T) {
+			isCalled := false
+			tt.nd.IfNone(func() {
+				isCalled = true
+			})
+			assert.Equal(t, tt.called, isCalled)
+		})
+	}
+}
+
+func TestNullDateIfNoneWithError(t *testing.T) {
+	tests := []struct {
+		nd     NullDate
+		called bool
+		err    error
+	}{
+		{NullDateFromDate(MustParse("2024-06-05")), false, nil},
+		{NullDate{}, true, nil},
+		{NullDate{}, true, fmt.Errorf("Returned error")},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`NullDate{date:"%s",isNotNull:%v}.IfNoneWithError()`, tt.nd.date, tt.nd.isNotNull)
+
+		t.Run(testcase, func(t *testing.T) {
+			isCalled := false
+			err := tt.nd.IfNoneWithError(func() error {
+				isCalled = true
+
+				return tt.err
+			})
+			assert.Equal(t, tt.called, isCalled)
+			assert.Equal(t, tt.err, err)
+		})
+	}
+}
+
+func TestNullDateMap(t *testing.T) {
+	tests := []struct {
+		nd   NullDate
+		want NullDate
+	}{
+		{
+			NullDateFromDate(MustParse("2024-06-05")),
+			NullDateFromDate(MustParse("2024-06-06")),
+		},
+		{
+			NullDate{},
+			NullDate{},
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`NullDate{date:"%s",isNotNull:%v}.Map()`, tt.nd.date, tt.nd.isNotNull)
+
+		t.Run(testcase, func(t *testing.T) {
+			nd := tt.nd.Map(func(d Date) Date {
+				return d.AddDay()
+			})
+
+			assert.Equal(t, nd, tt.want)
+		})
+	}
+}
+
 // Marshalling methods
 // --------------------------------------------------
 
