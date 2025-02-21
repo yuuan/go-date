@@ -81,7 +81,7 @@ func LastMonth() Month {
 func (m Month) IsZero() bool {
 	zm := ZeroMonth()
 
-	return m.y == zm.y && m.m == zm.m
+	return m.Equal(zm)
 }
 
 // IsJanuary checks if the Month instance is January.
@@ -156,23 +156,17 @@ func (m Month) IsFuture() bool {
 
 // IsCurrentMonth checks if the Month instance is the current month.
 func (m Month) IsCurrentMonth() bool {
-	tm := CurrentMonth()
-
-	return m.y == tm.y && m.m == tm.m
+	return m.Equal(CurrentMonth())
 }
 
 // IsNextMonth checks if the Month instance is the next month.
 func (m Month) IsNextMonth() bool {
-	nm := NextMonth()
-
-	return m.y == nm.y && m.m == nm.m
+	return m.Equal(NextMonth())
 }
 
 // IsLastMonth checks if the Month instance is the previous month.
 func (m Month) IsLastMonth() bool {
-	lm := LastMonth()
-
-	return m.y == lm.y && m.m == lm.m
+	return m.Equal(LastMonth())
 }
 
 // Comparison methods
