@@ -212,6 +212,8 @@ func (r DateRange) OverlapsWith(target DateRange) bool {
 }
 
 // LessThan checks if the DateRange instance is less than another DateRange instance.
+// It returns true if the start date of the current range is before the start date of the target range,
+// or if the start dates are equal and the end date of the current range is before the end date of the target range.
 func (r DateRange) LessThan(target DateRange) bool {
 	if r.StartsOnSameDate(target) {
 		return r.EndsBefore(target)
@@ -221,16 +223,20 @@ func (r DateRange) LessThan(target DateRange) bool {
 }
 
 // LessThanOrEqual checks if the DateRange instance is less than or equal to another DateRange instance.
+// It returns true if the current range is equal to or less than the target range.
 func (r DateRange) LessThanOrEqual(target DateRange) bool {
 	return r.Equal(target) || r.LessThan(target)
 }
 
 // GreaterThan checks if the DateRange instance is greater than another DateRange instance.
+// It returns true if the start date of the current range is after the start date of the target range,
+// or if the start dates are equal and the end date of the current range is after the end date of the target range.
 func (r DateRange) GreaterThan(target DateRange) bool {
 	return !r.LessThanOrEqual(target)
 }
 
 // GreaterThanOrEqual checks if the DateRange instance is greater than or equal to another DateRange instance.
+// It returns true if the current range is equal to or greater than the target range.
 func (r DateRange) GreaterThanOrEqual(target DateRange) bool {
 	return !r.LessThan(target)
 }
