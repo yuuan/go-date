@@ -11,6 +11,7 @@ var (
 
 type DateRanges []DateRange
 
+// AreUnique checks if all DateRange instances in the DateRanges slice are unique.
 func (drs DateRanges) AreUnique() bool {
 	length := len(drs)
 
@@ -25,6 +26,7 @@ func (drs DateRanges) AreUnique() bool {
 	return true
 }
 
+// AreOverlapping checks if any DateRange instances in the DateRanges slice overlap with each other.
 func (drs DateRanges) AreOverlapping() bool {
 	length := len(drs)
 
@@ -39,6 +41,7 @@ func (drs DateRanges) AreOverlapping() bool {
 	return false
 }
 
+// SortMutable sorts the DateRanges slice in place in ascending order.
 func (drs DateRanges) SortMutable() DateRanges {
 	sort.SliceStable(drs, func(i, j int) bool {
 		return drs[i].LessThan(drs[j])
@@ -47,6 +50,7 @@ func (drs DateRanges) SortMutable() DateRanges {
 	return drs
 }
 
+// SortReverseMutable sorts the DateRanges slice in place in descending order.
 func (drs DateRanges) SortReverseMutable() DateRanges {
 	sort.SliceStable(drs, func(i, j int) bool {
 		return drs[i].GreaterThanOrEqual(drs[j])
@@ -55,14 +59,17 @@ func (drs DateRanges) SortReverseMutable() DateRanges {
 	return drs
 }
 
+// Sort returns a new sorted DateRanges slice in ascending order.
 func (drs DateRanges) Sort() DateRanges {
 	return drs.clone().SortMutable()
 }
 
+// SortReverse returns a new sorted DateRanges slice in descending order.
 func (drs DateRanges) SortReverse() DateRanges {
 	return drs.clone().SortReverseMutable()
 }
 
+// StartDates returns a Dates slice containing the start dates of all DateRange instances in the DateRanges slice.
 func (drs DateRanges) StartDates() Dates {
 	starts := make(Dates, len(drs))
 
@@ -73,6 +80,7 @@ func (drs DateRanges) StartDates() Dates {
 	return starts
 }
 
+// EndDates returns a Dates slice containing the end dates of all DateRange instances in the DateRanges slice.
 func (drs DateRanges) EndDates() Dates {
 	ends := make(Dates, len(drs))
 
@@ -83,6 +91,7 @@ func (drs DateRanges) EndDates() Dates {
 	return ends
 }
 
+// FirstStart returns the earliest start date among all DateRange instances in the DateRanges slice.
 func (drs DateRanges) FirstStart() (Date, error) {
 	if len(drs) == 0 {
 		return ZeroDate(), ErrDateRangesAreEmpty
@@ -91,6 +100,7 @@ func (drs DateRanges) FirstStart() (Date, error) {
 	return drs.StartDates().Sort().MustMin(), nil
 }
 
+// LastEnd returns the latest end date among all DateRange instances in the DateRanges slice.
 func (drs DateRanges) LastEnd() (Date, error) {
 	if len(drs) == 0 {
 		return ZeroDate(), ErrDateRangesAreEmpty
@@ -99,6 +109,7 @@ func (drs DateRanges) LastEnd() (Date, error) {
 	return drs.EndDates().SortReverse().MustMax(), nil
 }
 
+// Strings returns a slice of string representations of all DateRange instances in the DateRanges slice.
 func (drs DateRanges) Strings() []string {
 	ranges := make([]string, len(drs))
 
@@ -109,6 +120,7 @@ func (drs DateRanges) Strings() []string {
 	return ranges
 }
 
+// clone creates a copy of the DateRanges slice.
 func (drs DateRanges) clone() DateRanges {
 	ranges := make(DateRanges, len(drs))
 	copy(ranges, drs[:])

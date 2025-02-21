@@ -11,6 +11,7 @@ var (
 
 type Dates []Date
 
+// AreUnique checks if all Date instances in the Dates slice are unique.
 func (ds Dates) AreUnique() bool {
 	length := len(ds)
 
@@ -25,6 +26,7 @@ func (ds Dates) AreUnique() bool {
 	return true
 }
 
+// SortMutable sorts the Dates slice in place in ascending order.
 func (ds Dates) SortMutable() Dates {
 	sort.SliceStable(ds, func(i, j int) bool {
 		return ds[i].Before(ds[j])
@@ -33,6 +35,7 @@ func (ds Dates) SortMutable() Dates {
 	return ds
 }
 
+// SortReverseMutable sorts the Dates slice in place in descending order.
 func (ds Dates) SortReverseMutable() Dates {
 	sort.SliceStable(ds, func(i, j int) bool {
 		return ds[i].After(ds[j])
@@ -41,14 +44,17 @@ func (ds Dates) SortReverseMutable() Dates {
 	return ds
 }
 
+// Sort returns a new sorted Dates slice in ascending order.
 func (ds Dates) Sort() Dates {
 	return ds.clone().SortMutable()
 }
 
+// SortReverse returns a new sorted Dates slice in descending order.
 func (ds Dates) SortReverse() Dates {
 	return ds.clone().SortReverseMutable()
 }
 
+// Min returns the minimum Date in the Dates slice.
 func (ds Dates) Min() (Date, error) {
 	if len(ds) == 0 {
 		return ZeroDate(), ErrDatesAreEmpty
@@ -59,6 +65,7 @@ func (ds Dates) Min() (Date, error) {
 	return dates[0], nil
 }
 
+// MustMin returns the minimum Date in the Dates slice. It panics if the Dates slice is empty.
 func (ds Dates) MustMin() Date {
 	min, err := ds.Min()
 	if err != nil {
@@ -68,6 +75,7 @@ func (ds Dates) MustMin() Date {
 	return min
 }
 
+// Max returns the maximum Date in the Dates slice.
 func (ds Dates) Max() (Date, error) {
 	if len(ds) == 0 {
 		return ZeroDate(), ErrDatesAreEmpty
@@ -78,6 +86,7 @@ func (ds Dates) Max() (Date, error) {
 	return dates[0], nil
 }
 
+// MustMax returns the maximum Date in the Dates slice. It panics if the Dates slice is empty.
 func (ds Dates) MustMax() Date {
 	max, err := ds.Max()
 	if err != nil {
@@ -87,6 +96,7 @@ func (ds Dates) MustMax() Date {
 	return max
 }
 
+// Equal checks if the Dates slice is equal to another Dates slice.
 func (ds Dates) Equal(targets Dates) bool {
 	if len(ds) != len(targets) {
 		return false
@@ -103,6 +113,7 @@ func (ds Dates) Equal(targets Dates) bool {
 	return true
 }
 
+// Strings returns a slice of string representations of all Date instances in the Dates slice.
 func (ds Dates) Strings() []string {
 	dates := make([]string, len(ds))
 
@@ -113,6 +124,7 @@ func (ds Dates) Strings() []string {
 	return dates
 }
 
+// clone creates a copy of the Dates slice.
 func (ds Dates) clone() Dates {
 	dates := make(Dates, len(ds))
 	copy(dates, ds[:])
