@@ -222,8 +222,11 @@ func (nd *NullDate) UnmarshalText(text []byte) error {
 
 	err := nd.date.UnmarshalText(text)
 	nd.isNotNull = err == nil
+	if err != nil {
+		return fmt.Errorf("NullDate.UnmarshalText: %w", err)
+	}
 
-	return fmt.Errorf("NullDate.UnmarshalText: %w", err)
+	return nil
 }
 
 // MarshalJSON marshals the NullDate instance to a JSON representation.
@@ -245,6 +248,9 @@ func (nd *NullDate) UnmarshalJSON(json []byte) error {
 
 	err := nd.date.UnmarshalJSON(json)
 	nd.isNotNull = err == nil
+	if err != nil {
+		return fmt.Errorf("NullDate.UnmarshalJSON: %w", err)
+	}
 
-	return fmt.Errorf("NullDate.UnmarshalJSON: %w", err)
+	return nil
 }

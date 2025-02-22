@@ -265,8 +265,12 @@ func TestTake(t *testing.T) {
 		t.Run(testcase, func(t *testing.T) {
 			date, err := tt.nd.Take()
 
-			assert.Equal(t, err != nil, tt.wantErr, fmt.Sprintf("Want err is %v", tt.wantErr))
-			assert.Equal(t, date, tt.want)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, date, tt.want)
+			}
 		})
 	}
 }
@@ -528,8 +532,12 @@ func TestNullDateValue(t *testing.T) {
 
 		t.Run(testcase, func(t *testing.T) {
 			value, err := tt.nd.Value()
-			assert.Equal(t, err != nil, tt.wantErr, fmt.Sprintf("Want err is %v", tt.wantErr))
-			assert.Equal(t, value, tt.want)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, value, tt.want)
+			}
 		})
 	}
 }
@@ -572,8 +580,12 @@ func TestNullDateScan(t *testing.T) {
 			nd := NullDate{}
 			err := nd.Scan(tt.value)
 
-			assert.Equal(t, err != nil, tt.wantErr, fmt.Sprintf("Want err is %v", tt.wantErr))
-			assert.Equal(t, nd, tt.want)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, nd, tt.want)
+			}
 		})
 	}
 }
@@ -640,8 +652,12 @@ func TestNullDateUnmarshalText(t *testing.T) {
 			nd := NullDate{}
 			err := nd.UnmarshalText([]byte(tt.text))
 
-			assert.Equal(t, err != nil, tt.wantErr, fmt.Sprintf("Want err is %v", tt.wantErr))
-			assert.Equal(t, nd, tt.want)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, nd, tt.want)
+			}
 		})
 	}
 }
@@ -708,8 +724,12 @@ func TestNullDateUnmarshalJSON(t *testing.T) {
 			nd := NullDate{}
 			err := nd.UnmarshalJSON([]byte(tt.json))
 
-			assert.Equal(t, err != nil, tt.wantErr, fmt.Sprintf("Want err is %v", tt.wantErr))
-			assert.Equal(t, nd, tt.want)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, nd, tt.want)
+			}
 		})
 	}
 }

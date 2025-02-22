@@ -415,11 +415,12 @@ func TestDateRangesFirstStart(t *testing.T) {
 		t.Run(testcase, func(t *testing.T) {
 			date, err := tt.ranges.FirstStart()
 
-			assert.Equal(t, tt.want, date)
 			if tt.wantErr != nil {
 				assert.Error(t, err, tt.wantErr)
+				assert.Equal(t, tt.want, date)
 			} else {
-				assert.Nil(t, err, "Expected no error, got %v", err)
+				assert.NoError(t, err)
+				assert.Equal(t, tt.want, date)
 			}
 		})
 	}
@@ -453,11 +454,12 @@ func TestDateRangesLastEnd(t *testing.T) {
 		t.Run(testcase, func(t *testing.T) {
 			date, err := tt.ranges.LastEnd()
 
-			assert.Equal(t, tt.want, date)
 			if tt.wantErr != nil {
 				assert.Error(t, err, tt.wantErr)
+				assert.Equal(t, tt.want, date)
 			} else {
-				assert.Nil(t, err, "Expected no error, got %v", err)
+				assert.NoError(t, err)
+				assert.Equal(t, tt.want, date)
 			}
 		})
 	}
