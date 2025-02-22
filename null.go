@@ -195,7 +195,7 @@ func (nd *NullDate) Scan(value interface{}) error {
 	if err := nd.date.Scan(value); err != nil {
 		nd.isNotNull = false
 
-		return fmt.Errorf("Scan: %w", err)
+		return fmt.Errorf("NullDate.Scan: %w", err)
 	}
 
 	nd.isNotNull = true
@@ -223,7 +223,7 @@ func (nd *NullDate) UnmarshalText(text []byte) error {
 	err := nd.date.UnmarshalText(text)
 	nd.isNotNull = err == nil
 
-	return err
+	return fmt.Errorf("NullDate.UnmarshalText: %w", err)
 }
 
 // MarshalJSON marshals the NullDate instance to a JSON representation.
@@ -246,5 +246,5 @@ func (nd *NullDate) UnmarshalJSON(json []byte) error {
 	err := nd.date.UnmarshalJSON(json)
 	nd.isNotNull = err == nil
 
-	return err
+	return fmt.Errorf("NullDate.UnmarshalJSON: %w", err)
 }

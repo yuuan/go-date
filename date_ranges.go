@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	ErrDateRangesAreEmpty = fmt.Errorf("This DataRanges are empty")
+	ErrDateRangesAreEmpty = fmt.Errorf("this DataRanges are empty")
 )
 
 type DateRanges []DateRange
@@ -94,7 +94,7 @@ func (drs DateRanges) EndDates() Dates {
 // FirstStart returns the earliest start date among all DateRange instances in the DateRanges slice.
 func (drs DateRanges) FirstStart() (Date, error) {
 	if len(drs) == 0 {
-		return ZeroDate(), ErrDateRangesAreEmpty
+		return ZeroDate(), fmt.Errorf("FirstStart: %w", ErrDateRangesAreEmpty)
 	}
 
 	return drs.StartDates().Sort().MustMin(), nil
@@ -103,7 +103,7 @@ func (drs DateRanges) FirstStart() (Date, error) {
 // LastEnd returns the latest end date among all DateRange instances in the DateRanges slice.
 func (drs DateRanges) LastEnd() (Date, error) {
 	if len(drs) == 0 {
-		return ZeroDate(), ErrDateRangesAreEmpty
+		return ZeroDate(), fmt.Errorf("LastEnd: %w", ErrDateRangesAreEmpty)
 	}
 
 	return drs.EndDates().SortReverse().MustMax(), nil

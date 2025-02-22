@@ -6,10 +6,10 @@ import (
 )
 
 var (
-	ErrDifferentTimeZone        = fmt.Errorf("The start date TimeZone and the end date TimeZone did not match")
-	ErrOnlyOneSideIsZero        = fmt.Errorf("Only one side cannot be zero")
-	ErrEndDateIsBeforeStartDate = fmt.Errorf("The end date is before the start date")
-	ErrRangesDontOverlap        = fmt.Errorf("This range and the target range don't overlap")
+	ErrDifferentTimeZone        = fmt.Errorf("start date TimeZone and end date TimeZone did not match")
+	ErrOnlyOneSideIsZero        = fmt.Errorf("only one side cannot be zero")
+	ErrEndDateIsBeforeStartDate = fmt.Errorf("end date is before start date")
+	ErrRangesDontOverlap        = fmt.Errorf("this range and target range don't overlap")
 )
 
 type DateRange struct {
@@ -25,15 +25,15 @@ type DateRange struct {
 // The comparison is done by comparing the memory addresses of the Location instances.
 func NewDateRange(start, end Date) (DateRange, error) {
 	if start.Location() != end.Location() {
-		return ZeroDateRange(), ErrDifferentTimeZone
+		return ZeroDateRange(), fmt.Errorf("NewDateRange: %w", ErrDifferentTimeZone)
 	}
 
 	if start.IsZero() != end.IsZero() {
-		return ZeroDateRange(), ErrOnlyOneSideIsZero
+		return ZeroDateRange(), fmt.Errorf("NewDateRange: %w", ErrOnlyOneSideIsZero)
 	}
 
 	if end.Before(start) {
-		return ZeroDateRange(), ErrEndDateIsBeforeStartDate
+		return ZeroDateRange(), fmt.Errorf("NewDateRange: %w", ErrEndDateIsBeforeStartDate)
 	}
 
 	return DateRange{
@@ -64,15 +64,20 @@ func ZeroDateRange() DateRange {
 func ParseDateRange(start, end string) (DateRange, error) {
 	s, err := Parse(start)
 	if err != nil {
-		return ZeroDateRange(), fmt.Errorf("Unable to parse the first date: %w", err)
+		return ZeroDateRange(), fmt.Errorf("ParseDateRange: failed to parse start date: %w", err)
 	}
 
 	e, err := Parse(end)
 	if err != nil {
-		return ZeroDateRange(), fmt.Errorf("Unable to parse the end date: %w", err)
+		return ZeroDateRange(), fmt.Errorf("ParseDateRange: failed to parse end date: %w", err)
 	}
 
-	return NewDateRange(s, e)
+	dr, err := NewDateRange(s, e)
+	if err != nil {
+		return ZeroDateRange(), fmt.Errorf("ParseDateRange: %w", err)
+	}
+
+	return dr, nil
 }
 
 // MustParseDateRange parses start and end date strings in the format "2006-01-02" and returns a DateRange instance.
@@ -90,15 +95,20 @@ func MustParseDateRange(start, end string) DateRange {
 func CustomParseDateRange(layout, start, end string) (DateRange, error) {
 	s, err := CustomParse(layout, start)
 	if err != nil {
-		return ZeroDateRange(), fmt.Errorf("Unable to parse the first date: %w", err)
+		return ZeroDateRange(), fmt.Errorf("CustomParseDateRange: failed to parse start date: %w", err)
 	}
 
 	e, err := CustomParse(layout, end)
 	if err != nil {
-		return ZeroDateRange(), fmt.Errorf("Unable to parse the end date: %w", err)
+		return ZeroDateRange(), fmt.Errorf("CustomParseDateRange: failed to parse end date: %w", err)
 	}
 
-	return NewDateRange(s, e)
+	dr, err := NewDateRange(s, e)
+	if err != nil {
+		return ZeroDateRange(), fmt.Errorf("CustomParseDateRange: %w", err)
+	}
+
+	return dr, nil
 }
 
 // MustCustomParseDateRange parses start and end date strings using the specified layout and returns a DateRange instance.
@@ -267,7 +277,7 @@ func (r DateRange) Days() int {
 // GetOverlapping returns the overlapping DateRange between the DateRange instance and another DateRange instance.
 func (r DateRange) GetOverlapping(target DateRange) (DateRange, error) {
 	if !r.OverlapsWith(target) {
-		return ZeroDateRange(), ErrRangesDontOverlap
+		return ZeroDateRange(), fmt.Errorf("GetOverlapping: %w", ErrRangesDontOverlap)
 	}
 
 	return DateRange{
