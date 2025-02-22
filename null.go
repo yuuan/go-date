@@ -3,7 +3,6 @@ package date
 import (
 	"bytes"
 	"database/sql/driver"
-	"errors"
 	"fmt"
 )
 
@@ -13,7 +12,7 @@ type NullDate struct {
 }
 
 var (
-	ErrNullDateIsNull = errors.New("NullDate is null")
+	ErrNullDateIsNull = fmt.Errorf("NullDate is null")
 )
 
 // Factory functions
