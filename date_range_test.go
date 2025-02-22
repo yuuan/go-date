@@ -68,11 +68,12 @@ func TestNewDateRange(t *testing.T) {
 		t.Run(testcase, func(t *testing.T) {
 			r, err := NewDateRange(tt.start, tt.end)
 
-			assert.Equal(t, tt.want.String(), r.String())
 			if tt.wantErr != nil {
 				assert.Error(t, err, tt.wantErr)
+				assert.Equal(t, tt.want.String(), r.String())
 			} else {
-				assert.Nil(t, err, "Expected no error, got %v", err)
+				assert.NoError(t, err)
+				assert.Equal(t, tt.want.String(), r.String())
 			}
 		})
 	}
@@ -187,8 +188,13 @@ func TestParseDateRange(t *testing.T) {
 
 		t.Run(testcase, func(t *testing.T) {
 			r, err := ParseDateRange(tt.start, tt.end)
-			assert.Equal(t, tt.want.String(), r.String())
-			assert.Equal(t, tt.wantErr, err != nil, fmt.Sprintf("Want err is %v", tt.wantErr))
+			if tt.wantErr {
+				assert.Error(t, err)
+				assert.Equal(t, tt.want.String(), r.String())
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.want.String(), r.String())
+			}
 		})
 	}
 }
@@ -289,8 +295,13 @@ func TestCustomParseDateRange(t *testing.T) {
 
 		t.Run(testcase, func(t *testing.T) {
 			r, err := CustomParseDateRange(tt.layout, tt.start, tt.end)
-			assert.Equal(t, tt.want.String(), r.String())
-			assert.Equal(t, tt.wantErr, err != nil, fmt.Sprintf("Want err is %v", tt.wantErr))
+			if tt.wantErr {
+				assert.Error(t, err)
+				assert.Equal(t, tt.want.String(), r.String())
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.want.String(), r.String())
+			}
 		})
 	}
 }
@@ -2019,11 +2030,12 @@ func TestDateRangeGetOverlapping(t *testing.T) {
 		t.Run(testcase, func(t *testing.T) {
 			r, err := tt.drA.GetOverlapping(tt.drB)
 
-			assert.Equal(t, tt.want.String(), r.String())
 			if tt.wantErr != nil {
 				assert.Error(t, err, tt.wantErr)
+				assert.Equal(t, tt.want.String(), r.String())
 			} else {
-				assert.Nil(t, err, "Expected no error, got %v", err)
+				assert.NoError(t, err)
+				assert.Equal(t, tt.want.String(), r.String())
 			}
 		})
 	}

@@ -33,7 +33,12 @@ func FromTime(source time.Time) Date {
 
 // Parse parses a date string in the format "2006-01-02" and returns a Date instance.
 func Parse(value string) (Date, error) {
-	return CustomParse("2006-01-02", value)
+	d, err := CustomParse("2006-01-02", value)
+	if err != nil {
+		return ZeroDate(), fmt.Errorf("Parse: %w", err)
+	}
+
+	return d, nil
 }
 
 // MustParse parses a date string in the format "2006-01-02" and returns a Date instance.
@@ -46,7 +51,7 @@ func MustParse(value string) Date {
 func CustomParse(layout, value string) (Date, error) {
 	time, err := time.ParseInLocation(layout, value, location())
 	if err != nil {
-		return ZeroDate(), fmt.Errorf("Unable to parse the date: %w", err)
+		return ZeroDate(), fmt.Errorf("failed to parse date %q with layout %q: %w", value, layout, err)
 	}
 
 	return FromTime(time), nil
@@ -219,7 +224,7 @@ func (d Date) BeforeOrEqual(date Date) bool {
 func (d Date) Between(start, end Date) (bool, error) {
 	r, err := NewDateRange(start, end)
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("Between: cannot determine if %v is between %v and %v: %w", d, start, end, err)
 	}
 
 	return r.Contains(d), nil
@@ -444,7 +449,7 @@ func (d *Date) Scan(value interface{}) error {
 
 		date, err := Parse(value)
 		if err != nil {
-			return fmt.Errorf("Scan: %v", err)
+			return fmt.Errorf("Scan: %w", err)
 		}
 
 		*d = date
@@ -457,7 +462,7 @@ func (d *Date) Scan(value interface{}) error {
 		return d.Scan(string(value))
 
 	default:
-		return fmt.Errorf("Scan: Unable to scan type %T into Date", value)
+		return fmt.Errorf("Scan: unable to scan type %T into Date", value)
 	}
 
 	return nil
@@ -472,7 +477,7 @@ func (d *Date) MarshalText() ([]byte, error) {
 func (d *Date) UnmarshalText(text []byte) error {
 	date, err := Parse(string(text))
 	if err != nil {
-		return err
+		return fmt.Errorf("Date.UnmarshalText: %w", err)
 	}
 
 	d.value = date.value
@@ -491,7 +496,7 @@ func (d *Date) UnmarshalJSON(json []byte) error {
 
 	date, err := Parse(value)
 	if err != nil {
-		return err
+		return fmt.Errorf("Date.UnmarshalJSON: %w", err)
 	}
 
 	d.value = date.value

@@ -258,7 +258,7 @@ func TestDatesMin(t *testing.T) {
 
 		min, err := dates.Min()
 
-		assert.ErrorIs(t, ErrDatesAreEmpty, err)
+		assert.ErrorIs(t, err, ErrDatesAreEmpty)
 		assert.Equal(t, ZeroDate(), min)
 	})
 }
@@ -300,7 +300,7 @@ func TestDatesMax(t *testing.T) {
 
 		max, err := dates.Max()
 
-		assert.ErrorIs(t, ErrDatesAreEmpty, err)
+		assert.ErrorIs(t, err, ErrDatesAreEmpty)
 		assert.Equal(t, ZeroDate(), max)
 	})
 }

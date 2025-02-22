@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	ErrEndMonthIsBeforeStartMonth = fmt.Errorf("The end month is before the start month")
+	ErrEndMonthIsBeforeStartMonth = fmt.Errorf("end month is before start month")
 )
 
 type Month struct {
@@ -42,7 +42,7 @@ func MonthFromTime(time time.Time) Month {
 func ParseMonth(value string) (Month, error) {
 	d, err := CustomParse("2006-01", value)
 	if err != nil {
-		return ZeroMonth(), fmt.Errorf("Unable to parse the year-month: %v", err)
+		return ZeroMonth(), fmt.Errorf("ParseMonth: %w", err)
 	}
 
 	return MonthFromDate(d), nil
@@ -219,7 +219,12 @@ func (m Month) BeforeOrEqual(month Month) bool {
 // Between checks if the Month instance is between two other Month instances.
 func (m Month) Between(start, end Month) (bool, error) {
 	if start.After(end) {
-		return false, ErrEndMonthIsBeforeStartMonth
+		return false, fmt.Errorf(
+			"Between: end month %v is before start month %v: %w",
+			end,
+			start,
+			ErrEndMonthIsBeforeStartMonth,
+		)
 	}
 
 	return start.BeforeOrEqual(m) && end.AfterOrEqual(m), nil
@@ -351,7 +356,7 @@ func (m *Month) MarshalText() ([]byte, error) {
 func (m *Month) UnmarshalText(text []byte) error {
 	month, err := ParseMonth(string(text))
 	if err != nil {
-		return err
+		return fmt.Errorf("Month.UnmarshalText: %w", err)
 	}
 
 	m.y, m.m = month.y, month.m
@@ -370,7 +375,7 @@ func (m *Month) UnmarshalJSON(json []byte) error {
 
 	month, err := ParseMonth(value)
 	if err != nil {
-		return err
+		return fmt.Errorf("Month.UnmarshalJSON: %w", err)
 	}
 
 	m.y, m.m = month.y, month.m

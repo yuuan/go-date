@@ -74,7 +74,7 @@ func TestParseMonth(t *testing.T) {
 		t.Run(testcase, func(t *testing.T) {
 			month, err := ParseMonth(tt.value)
 			if tt.want == "error" {
-				assert.ErrorContains(t, err, "Unable to parse")
+				assert.Error(t, err)
 			} else {
 				assert.Nil(t, err, "An unexpected error was returned")
 				assert.Equal(t, tt.want, month.String(), "The parsed month does not match the expected month")

@@ -78,9 +78,9 @@ func TestParse(t *testing.T) {
 		t.Run(testcase, func(t *testing.T) {
 			date, err := Parse(tt.value)
 			if tt.want == "error" {
-				assert.ErrorContains(t, err, "Unable to parse")
+				assert.Error(t, err)
 			} else {
-				assert.Nil(t, err, "An unexpected error was returned")
+				assert.NoError(t, err)
 				assert.Equal(t, tt.want, date.String(), "The parsed date does not match the expected date")
 			}
 		})
@@ -135,9 +135,9 @@ func TestCustomParse(t *testing.T) {
 		t.Run(testcase, func(t *testing.T) {
 			date, err := CustomParse(tt.layout, tt.value)
 			if tt.want == "error" {
-				assert.ErrorContains(t, err, "Unable to parse")
+				assert.Error(t, err)
 			} else {
-				assert.Nil(t, err, "An unexpected error was returned")
+				assert.NoError(t, err)
 				assert.Equal(t, tt.want, date.String(), "The parsed date does not match the expected date")
 			}
 		})
@@ -1028,11 +1028,12 @@ func TestDateBetween(t *testing.T) {
 
 		t.Run(testcase, func(t *testing.T) {
 			b, err := tt.date.Between(tt.start, tt.end)
-			assert.Equal(t, tt.want, b)
 			if tt.wantErr != nil {
-				assert.Error(t, err, tt.wantErr)
+				assert.ErrorIs(t, err, tt.wantErr)
+				assert.Equal(t, tt.want, b)
 			} else {
-				assert.Nil(t, err, "Expected no error, got %v", err)
+				assert.NoError(t, err)
+				assert.Equal(t, tt.want, b)
 			}
 		})
 	}
@@ -1734,7 +1735,7 @@ func TestDateValue(t *testing.T) {
 		t.Run(testcase, func(t *testing.T) {
 			value, err := tt.date.Value()
 			assert.Equal(t, tt.wantValue, value)
-			assert.Equal(t, tt.wantErr, err)
+			assert.ErrorIs(t, err, tt.wantErr)
 		})
 	}
 }
@@ -1759,7 +1760,7 @@ func TestDateScan(t *testing.T) {
 				assert.Error(t, err, "Unable to parse")
 				assert.True(t, d.IsZero(), "date is not zero")
 			} else {
-				assert.Nil(t, err, "Expected no error, got %v", err)
+				assert.NoError(t, err, "Expected no error, got %v", err)
 				assert.Equal(t, tt.want, d.String())
 			}
 		})
@@ -1806,7 +1807,7 @@ func TestDateUnmarshalText(t *testing.T) {
 				assert.Error(t, err, "Unable to parse")
 				assert.True(t, d.IsZero(), "date is not zero")
 			} else {
-				assert.Nil(t, err, "Expected no error, got %v", err)
+				assert.NoError(t, err, "Expected no error, got %v", err)
 				assert.Equal(t, tt.want, d.String())
 			}
 		})
@@ -1853,7 +1854,7 @@ func TestDateUnmarshalJSON(t *testing.T) {
 				assert.Error(t, err, "Unable to parse")
 				assert.True(t, d.IsZero(), "date is not zero")
 			} else {
-				assert.Nil(t, err, "Expected no error, got %v", err)
+				assert.NoError(t, err, "Expected no error, got %v", err)
 				assert.Equal(t, tt.want, d.String())
 			}
 		})

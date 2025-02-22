@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	ErrDatesAreEmpty = fmt.Errorf("This Dates are empty")
+	ErrDatesAreEmpty = fmt.Errorf("this Dates are empty")
 )
 
 type Dates []Date
@@ -57,7 +57,7 @@ func (ds Dates) SortReverse() Dates {
 // Min returns the minimum Date in the Dates slice.
 func (ds Dates) Min() (Date, error) {
 	if len(ds) == 0 {
-		return ZeroDate(), ErrDatesAreEmpty
+		return ZeroDate(), fmt.Errorf("Min: %w", ErrDatesAreEmpty)
 	}
 
 	dates := ds.Sort()
@@ -78,7 +78,7 @@ func (ds Dates) MustMin() Date {
 // Max returns the maximum Date in the Dates slice.
 func (ds Dates) Max() (Date, error) {
 	if len(ds) == 0 {
-		return ZeroDate(), ErrDatesAreEmpty
+		return ZeroDate(), fmt.Errorf("Max: %w", ErrDatesAreEmpty)
 	}
 
 	dates := ds.SortReverse()

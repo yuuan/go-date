@@ -3,7 +3,6 @@ package date
 import (
 	"bytes"
 	"database/sql/driver"
-	"errors"
 	"fmt"
 )
 
@@ -13,7 +12,7 @@ type NullDate struct {
 }
 
 var (
-	ErrNullDateIsNull = errors.New("NullDate is null")
+	ErrNullDateIsNull = fmt.Errorf("NullDate is null")
 )
 
 // Factory functions
@@ -196,7 +195,7 @@ func (nd *NullDate) Scan(value interface{}) error {
 	if err := nd.date.Scan(value); err != nil {
 		nd.isNotNull = false
 
-		return fmt.Errorf("Scan: %w", err)
+		return fmt.Errorf("NullDate.Scan: %w", err)
 	}
 
 	nd.isNotNull = true
@@ -223,8 +222,11 @@ func (nd *NullDate) UnmarshalText(text []byte) error {
 
 	err := nd.date.UnmarshalText(text)
 	nd.isNotNull = err == nil
+	if err != nil {
+		return fmt.Errorf("NullDate.UnmarshalText: %w", err)
+	}
 
-	return err
+	return nil
 }
 
 // MarshalJSON marshals the NullDate instance to a JSON representation.
@@ -246,6 +248,9 @@ func (nd *NullDate) UnmarshalJSON(json []byte) error {
 
 	err := nd.date.UnmarshalJSON(json)
 	nd.isNotNull = err == nil
+	if err != nil {
+		return fmt.Errorf("NullDate.UnmarshalJSON: %w", err)
+	}
 
-	return err
+	return nil
 }
