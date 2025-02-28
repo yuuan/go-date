@@ -2,8 +2,10 @@
 
 ## Description
 
-`Date` is a struct designed for handling dates without time components.
-Using `time.Time` to represent dates requires considering the time part during comparisons, which can lead to unintended issues. Date eliminates this concern by storing only the date information. It also provides useful methods for common date operations such as determination, comparison, addition, subtraction, conversion, and marshalling.
+`Date` is an immutable struct designed for handling dates without time components.
+Using `time.Time` to represent dates requires considering the time part during comparisons, which can lead to unintended issues.
+Date eliminates this concern by storing only the date information and ensuring immutability, preventing accidental modifications.
+It also provides useful methods for common date operations such as determination, comparison, addition, subtraction, conversion, and marshalling.
 
 ## Usage
 
@@ -39,8 +41,10 @@ str := d.String() // "2024-03-15"
 
 ## Description
 
-`DateRange` is a struct for handling a date range from a start date to an end date.  
-It allows you to easily determine whether two date ranges overlap.
+DateRange is an immutable struct for handling a date range from a start date to an end date.
+It ensures that once created, the range remains unchanged, preventing unintended modifications.
+It also allows you to easily determine whether two date ranges overlap.
+
 
 ## Usage
 
