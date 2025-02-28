@@ -37,6 +37,46 @@ if today.After(yesterday) {
 str := d.String() // "2024-03-15"
 ```
 
+# Month
+
+## Description
+
+Month is an immutable struct for handling year and month values without considering specific dates or times.
+It allows precise month-based calculations, such as adding or subtracting months, without dealing with days or time components.
+
+## Usage
+
+```go
+// Create a new Month instance with the current month.
+currentMonth := date.CurrentMonth()
+
+// Create a new Month instance with a specific year and month.
+specificMonth := date.NewMonth(2024, 3)
+
+// Parse from string.
+m, _ := date.ParseMonth("2024-03")
+
+// Month calculations.
+nextMonth := currentMonth.AddMonth()
+previousMonth := currentMonth.SubMonth()
+
+// Determine if a month is in the past.
+if previousMonth.IsPast() {
+    // do something
+}
+
+// Compare months.
+if currentMonth.After(previousMonth) {
+    // do something
+}
+
+// Get the DateRange for the month.
+dateRange := currentMonth.ToDateRange() // DateRange{start: 2024-03-01, end: 2024-03-31}
+
+// Format to string.
+str := m.String() // "2024-03"
+```
+
 # DateRange
 
 ## Description
@@ -44,7 +84,6 @@ str := d.String() // "2024-03-15"
 DateRange is an immutable struct for handling a date range from a start date to an end date.
 It ensures that once created, the range remains unchanged, preventing unintended modifications.
 It also allows you to easily determine whether two date ranges overlap.
-
 
 ## Usage
 
@@ -76,7 +115,7 @@ overlaps := march.Overlaps(other) // true
 # Installation
 
 ```shell
-go get github.com/yuuan/go-date
+$ go get github.com/yuuan/go-date
 ```
 
 # Tests
