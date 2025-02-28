@@ -1502,6 +1502,48 @@ func TestDateTime(t *testing.T) {
 	}
 }
 
+func TestDateAt(t *testing.T) {
+	tests := []struct {
+		date Date
+		hour int
+		min  int
+		sec  int
+		nsec int
+		want time.Time
+	}{
+		{
+			MustParse("2024-06-05"),
+			0, 0, 0, 0,
+			time.Date(2024, time.June, 5, 0, 0, 0, 0, time.Local),
+		},
+		{
+			MustParse("2024-06-05"),
+			12, 34, 56, 789,
+			time.Date(2024, time.June, 5, 12, 34, 56, 789, time.Local),
+		},
+		{
+			ZeroDate(),
+			12, 34, 56, 789,
+			time.Date(1, time.January, 1, 12, 34, 56, 789, time.UTC),
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(
+			`Date{"%s"}.At(%d, %d, %d, %d)`,
+			tt.date,
+			tt.hour,
+			tt.min,
+			tt.sec,
+			tt.nsec,
+		)
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.date.At(tt.hour, tt.min, tt.sec, tt.nsec))
+		})
+	}
+}
+
 func TestDateYear(t *testing.T) {
 	tests := []struct {
 		date Date
