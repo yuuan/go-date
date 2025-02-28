@@ -1384,6 +1384,27 @@ func TestMonthLastDate(t *testing.T) {
 	}
 }
 
+func TestMonthOn(t *testing.T) {
+	tests := []struct {
+		month Month
+		day   int
+		want  Date
+	}{
+		{MustParseMonth("2024-06"), 5, MustParse("2024-06-05")},
+		{MustParseMonth("2024-06"), 32, MustParse("2024-07-02")},
+		{MustParseMonth("2024-06"), 0, MustParse("2024-05-31")},
+		{MustParseMonth("2024-06"), -1, MustParse("2024-05-30")},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`Month{"%s"}.On(%d)`, tt.month, tt.day)
+
+		t.Run(testcase, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.month.On(tt.day))
+		})
+	}
+}
+
 func TestMonthToDateRange(t *testing.T) {
 	tests := []struct {
 		month Month
