@@ -307,6 +307,12 @@ func (m Month) LastDate() Date {
 	return m.AddMonth().FirstDate().SubDay()
 }
 
+// On returns a Date with the specified day in the same month and year.
+// If the specified day exceeds the number of days in the month, it rolls over to the next month.
+func (m Month) On(day int) Date {
+	return m.FirstDate().AddDays(day - 1)
+}
+
 // ToDateRange converts the Month instance to a DateRange instance.
 func (m Month) ToDateRange() DateRange {
 	r, _ := NewDateRange(m.FirstDate(), m.LastDate())

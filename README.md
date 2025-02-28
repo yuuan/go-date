@@ -2,8 +2,10 @@
 
 ## Description
 
-`Date` is a struct designed for handling dates without time components.
-Using `time.Time` to represent dates requires considering the time part during comparisons, which can lead to unintended issues. Date eliminates this concern by storing only the date information. It also provides useful methods for common date operations such as determination, comparison, addition, subtraction, conversion, and marshalling.
+`Date` is an immutable struct designed for handling dates without time components.
+Using `time.Time` to represent dates requires considering the time part during comparisons, which can lead to unintended issues.
+Date eliminates this concern by storing only the date information and ensuring immutability, preventing accidental modifications.
+It also provides useful methods for common date operations such as determination, comparison, addition, subtraction, conversion, and marshalling.
 
 ## Usage
 
@@ -35,12 +37,53 @@ if today.After(yesterday) {
 str := d.String() // "2024-03-15"
 ```
 
+# Month
+
+## Description
+
+Month is an immutable struct for handling year and month values without considering specific dates or times.
+It allows precise month-based calculations, such as adding or subtracting months, without dealing with days or time components.
+
+## Usage
+
+```go
+// Create a new Month instance with the current month.
+currentMonth := date.CurrentMonth()
+
+// Create a new Month instance with a specific year and month.
+specificMonth := date.NewMonth(2024, 3)
+
+// Parse from string.
+m, _ := date.ParseMonth("2024-03")
+
+// Month calculations.
+nextMonth := currentMonth.AddMonth()
+previousMonth := currentMonth.SubMonth()
+
+// Determine if a month is in the past.
+if previousMonth.IsPast() {
+    // do something
+}
+
+// Compare months.
+if currentMonth.After(previousMonth) {
+    // do something
+}
+
+// Get the DateRange for the month.
+dateRange := currentMonth.ToDateRange() // DateRange{start: 2024-03-01, end: 2024-03-31}
+
+// Format to string.
+str := m.String() // "2024-03"
+```
+
 # DateRange
 
 ## Description
 
-`DateRange` is a struct for handling a date range from a start date to an end date.  
-It allows you to easily determine whether two date ranges overlap.
+DateRange is an immutable struct for handling a date range from a start date to an end date.
+It ensures that once created, the range remains unchanged, preventing unintended modifications.
+It also allows you to easily determine whether two date ranges overlap.
 
 ## Usage
 
@@ -72,7 +115,7 @@ overlaps := march.Overlaps(other) // true
 # Installation
 
 ```shell
-go get github.com/yuuan/go-date
+$ go get github.com/yuuan/go-date
 ```
 
 # Tests

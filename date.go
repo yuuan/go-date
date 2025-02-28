@@ -363,6 +363,20 @@ func (d Date) Time() time.Time {
 	return d.value
 }
 
+// At returns a time.Time with the specified time, keeping the same date.
+func (d Date) At(hour, min, sec, nsec int) time.Time {
+	return time.Date(
+		d.value.Year(),
+		d.value.Month(),
+		d.value.Day(),
+		hour,
+		min,
+		sec,
+		nsec,
+		d.value.Location(),
+	)
+}
+
 // Year returns the year of the Date instance.
 func (d Date) Year() int {
 	return d.value.Year()
