@@ -14,6 +14,7 @@ func TestSetTestNow(t *testing.T) {
 	}
 
 	SetTestNow(factory)
+	defer ResetTestNow()
 
 	subject := now()
 
@@ -41,6 +42,7 @@ func TestSetTestLocation(t *testing.T) {
 	}
 
 	SetTestLocation(factory)
+	defer ResetTestLocation()
 
 	subject := location()
 
