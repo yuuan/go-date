@@ -15,7 +15,9 @@ func TestSetTestNow(t *testing.T) {
 
 	SetTestNow(factory)
 
-	assert.Equal(t, now(), mocked, "Current time factory was not replaced by the set function")
+	subject := now()
+
+	assert.Equal(t, subject, mocked, "Current time factory was not replaced by the set function")
 }
 
 func TestResetTestNow(t *testing.T) {
@@ -27,7 +29,9 @@ func TestResetTestNow(t *testing.T) {
 
 	ResetTestNow()
 
-	assert.NotEqual(t, now(), mocked, "Current time factory was replaced")
+	subject := now()
+
+	assert.NotEqual(t, subject, mocked, "Current time factory was replaced")
 }
 
 func TestSetTestLocation(t *testing.T) {
@@ -38,7 +42,9 @@ func TestSetTestLocation(t *testing.T) {
 
 	SetTestLocation(factory)
 
-	assert.Equal(t, location(), mocked, "Location factory was not replaced by the set function")
+	subject := location()
+
+	assert.Equal(t, subject, mocked, "Location factory was not replaced by the set function")
 }
 
 func TestResetTestLocation(t *testing.T) {
@@ -50,7 +56,9 @@ func TestResetTestLocation(t *testing.T) {
 
 	ResetTestLocation()
 
-	assert.NotEqual(t, location(), mocked, "Location factory was replaced")
+	subject := location()
+
+	assert.NotEqual(t, subject, mocked, "Location factory was replaced")
 }
 
 func TestNow(t *testing.T) {
