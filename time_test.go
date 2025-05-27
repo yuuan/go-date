@@ -52,3 +52,17 @@ func TestResetTestLocation(t *testing.T) {
 
 	assert.NotEqual(t, location(), mocked, "Location factory was replaced")
 }
+
+func TestNow(t *testing.T) {
+	mocked := time.Date(2024, time.June, 5, 12, 0, 0, 0, time.Local)
+	factory := func() time.Time {
+		return mocked
+	}
+
+	SetTestNow(factory)
+	defer ResetTestNow()
+
+	subject := Now()
+
+	assert.Equal(t, mocked, subject, "Now() should return mocked time when SetTestNow is used")
+}

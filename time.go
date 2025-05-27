@@ -11,6 +11,11 @@ var (
 	location = func() *time.Location { return time.Local }
 )
 
+// Now returns the current time, which can be mocked using SetTestNow.
+func Now() time.Time {
+	return now()
+}
+
 // SetTestNow sets a custom function to return the current time.
 // This function is used to mock the current time in tests.
 func SetTestNow(getNow func() time.Time) {
