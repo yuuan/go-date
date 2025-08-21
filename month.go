@@ -371,7 +371,7 @@ func (m *Month) UnmarshalText(text []byte) error {
 }
 
 // MarshalJSON marshals the Month instance to a JSON representation.
-func (m *Month) MarshalJSON() ([]byte, error) {
+func (m Month) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + m.String() + `"`), nil
 }
 

@@ -1919,7 +1919,7 @@ func TestDateJSONRoundTrip(t *testing.T) {
 
 		t.Run(testcase, func(t *testing.T) {
 			// Marshal
-			jsonData, err := json.Marshal(&tt.date)
+			jsonData, err := json.Marshal(tt.date)
 			assert.NoError(t, err)
 
 			// Unmarshal

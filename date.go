@@ -500,7 +500,7 @@ func (d *Date) UnmarshalText(text []byte) error {
 }
 
 // MarshalJSON marshals the Date instance to a JSON representation.
-func (d *Date) MarshalJSON() ([]byte, error) {
+func (d Date) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + d.String() + `"`), nil
 }
 
