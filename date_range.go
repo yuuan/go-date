@@ -1,6 +1,7 @@
 package date
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -300,4 +301,56 @@ func (r DateRange) Dates() Dates {
 // String returns the string representation of the DateRange instance in the format "start/end".
 func (r DateRange) String() string {
 	return r.start.String() + "/" + r.end.String()
+}
+
+// Marshalling methods
+// --------------------------------------------------
+
+// MarshalJSON marshals the DateRange instance to a JSON representation.
+func (r DateRange) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		Start string `json:"start"`
+		End   string `json:"end"`
+	}{
+		Start: r.start.String(),
+		End:   r.end.String(),
+	})
+}
+
+// UnmarshalJSON unmarshals a JSON representation into the DateRange instance.
+func (r *DateRange) UnmarshalJSON(data []byte) error {
+	zero := ZeroDateRange()
+	zeroJSON, err := zero.MarshalJSON()
+	if err != nil {
+		return fmt.Errorf("failed to marshal zero date range: %w", err)
+	}
+	if string(data) == string(zeroJSON) {
+		*r = zero
+
+		return nil
+	}
+
+	var m map[string]string
+	if err := json.Unmarshal(data, &m); err != nil {
+		return err
+	}
+
+	start, err := Parse(m["start"])
+	if err != nil {
+		return fmt.Errorf("failed to parse start date: %w", err)
+	}
+
+	end, err := Parse(m["end"])
+	if err != nil {
+		return fmt.Errorf("failed to parse end date: %w", err)
+	}
+
+	dr, err := NewDateRange(start, end)
+	if err != nil {
+		return fmt.Errorf("failed to create date range: %w", err)
+	}
+
+	*r = dr
+
+	return nil
 }
