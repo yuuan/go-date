@@ -2,6 +2,7 @@ package date
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
@@ -1899,6 +1900,35 @@ func TestDateUnmarshalJSON(t *testing.T) {
 				assert.NoError(t, err, "Expected no error, got %v", err)
 				assert.Equal(t, tt.want, d.String())
 			}
+		})
+	}
+}
+
+func TestDateJSONRoundTrip(t *testing.T) {
+	tests := []struct {
+		date Date
+	}{
+		{MustParse("2024-01-15")},
+		{MustParse("2024-05-05")},
+		{MustParse("2023-12-31")},
+		{ZeroDate()},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`Date{"%s"} JSON round trip`, tt.date)
+
+		t.Run(testcase, func(t *testing.T) {
+			// Marshal
+			jsonData, err := json.Marshal(&tt.date)
+			assert.NoError(t, err)
+
+			// Unmarshal
+			var result Date
+			err = json.Unmarshal(jsonData, &result)
+			assert.NoError(t, err)
+
+			// Compare
+			assert.Equal(t, tt.date, result)
 		})
 	}
 }
