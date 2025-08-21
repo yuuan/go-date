@@ -1,6 +1,7 @@
 package date
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
@@ -2099,6 +2100,140 @@ func TestDateRangeString(t *testing.T) {
 
 		t.Run(testcase, func(t *testing.T) {
 			assert.Equal(t, tt.want, tt.dr.String())
+		})
+	}
+}
+
+func TestDateRangeMarshalJSON(t *testing.T) {
+	tests := []struct {
+		dr   DateRange
+		want string
+	}{
+		{
+			MustParseDateRange("2024-01-15", "2024-02-20"),
+			`{"start":"2024-01-15","end":"2024-02-20"}`,
+		},
+		{
+			MustParseDateRange("2024-03-01", "2024-03-01"),
+			`{"start":"2024-03-01","end":"2024-03-01"}`,
+		},
+		{
+			MustParseDateRange("2023-12-31", "2024-01-01"),
+			`{"start":"2023-12-31","end":"2024-01-01"}`,
+		},
+		{
+			ZeroDateRange(),
+			`{"start":"0001-01-01","end":"0001-01-01"}`,
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(
+			`DateRange{"%s","%s"}.MarshalJSON()`,
+			tt.dr.start,
+			tt.dr.end,
+		)
+
+		t.Run(testcase, func(t *testing.T) {
+			result, err := json.Marshal(tt.dr)
+			assert.NoError(t, err)
+			assert.JSONEq(t, tt.want, string(result))
+		})
+	}
+}
+
+func TestDateRangeUnmarshalJSON(t *testing.T) {
+	tests := []struct {
+		json    string
+		want    DateRange
+		wantErr bool
+	}{
+		{
+			`{"start":"2024-01-15","end":"2024-02-20"}`,
+			MustParseDateRange("2024-01-15", "2024-02-20"),
+			false,
+		},
+		{
+			`{"start":"2024-03-01","end":"2024-03-01"}`,
+			MustParseDateRange("2024-03-01", "2024-03-01"),
+			false,
+		},
+		{
+			`{"start":"2023-12-31","end":"2024-01-01"}`,
+			MustParseDateRange("2023-12-31", "2024-01-01"),
+			false,
+		},
+		{
+			`{"start":"0001-01-01","end":"0001-01-01"}`,
+			ZeroDateRange(),
+			false,
+		},
+		{
+			`{"start":"invalid","end":"2024-02-20"}`,
+			ZeroDateRange(),
+			true,
+		},
+		{
+			`{"start":"2024-01-15","end":"invalid"}`,
+			ZeroDateRange(),
+			true,
+		},
+		{
+			`{"start":"2024-02-20","end":"2024-01-15"}`,
+			ZeroDateRange(),
+			true,
+		},
+		{
+			`{"start":"2024-01-15"`,
+			ZeroDateRange(),
+			true,
+		},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(`UnmarshalJSON(%s)`, tt.json)
+
+		t.Run(testcase, func(t *testing.T) {
+			var dr DateRange
+			err := json.Unmarshal([]byte(tt.json), &dr)
+
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tt.want, dr)
+			}
+		})
+	}
+}
+
+func TestDateRangeJSONRoundTrip(t *testing.T) {
+	tests := []struct {
+		dr DateRange
+	}{
+		{MustParseDateRange("2024-01-15", "2024-02-20")},
+		{MustParseDateRange("2024-05-05", "2024-05-05")},
+		{MustParseDateRange("2023-12-31", "2024-01-01")},
+		{MustParseDateRange("2020-01-01", "2025-12-31")},
+		{ZeroDateRange()},
+	}
+
+	for _, tt := range tests {
+		testcase := fmt.Sprintf(
+			`DateRange{"%s","%s"} JSON round trip`,
+			tt.dr.start,
+			tt.dr.end,
+		)
+
+		t.Run(testcase, func(t *testing.T) {
+			jsonData, err := json.Marshal(tt.dr)
+			assert.NoError(t, err)
+
+			var result DateRange
+			err = json.Unmarshal(jsonData, &result)
+			assert.NoError(t, err)
+
+			assert.Equal(t, tt.dr, result)
 		})
 	}
 }

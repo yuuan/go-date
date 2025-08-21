@@ -500,12 +500,23 @@ func (d *Date) UnmarshalText(text []byte) error {
 }
 
 // MarshalJSON marshals the Date instance to a JSON representation.
-func (d *Date) MarshalJSON() ([]byte, error) {
+func (d Date) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + d.String() + `"`), nil
 }
 
 // UnmarshalJSON unmarshals a JSON representation into the Date instance.
 func (d *Date) UnmarshalJSON(json []byte) error {
+	zero := ZeroDate()
+	zeroJSON, err := zero.MarshalJSON()
+	if err != nil {
+		return fmt.Errorf("failed to marshal zero date: %w", err)
+	}
+	if string(json) == string(zeroJSON) {
+		*d = zero
+
+		return nil
+	}
+
 	value := strings.Trim(string(json), `"`)
 
 	date, err := Parse(value)
